@@ -4,6 +4,8 @@
 #include "StreamFake.h"
 #include "arduino/USBAPI.h"
 
+#if defined(USBCON)
+
 struct SerialFake : public StreamFake
 {
     virtual void begin(unsigned long) = 0;
@@ -46,3 +48,5 @@ class SerialFakeProxy : public StreamFakeProxy, public Serial_
             return serialFake;
         }
 };
+
+#endif // USBCON
