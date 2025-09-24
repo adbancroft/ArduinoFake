@@ -1,6 +1,11 @@
 #include "ArduinoFake.h"
 #include "PrintFake.h"
 
+int Print::availableForWrite(void)
+{
+    return ArduinoFakeInstance(Print, this)->availableForWrite();
+}
+
 size_t Print::write(const uint8_t *buffer, size_t size)
 {
     return ArduinoFakeInstance(Print, this)->write(buffer, size);

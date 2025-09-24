@@ -6,6 +6,18 @@ using namespace fakeit;
 
 namespace PrintTest
 {
+    void test_availableForWrite(void)
+    {
+        When(Method(ArduinoFake(Print), availableForWrite)).Return(-100);
+
+        Print* print = ArduinoFakeMock(Print);
+
+        int result = print->availableForWrite();
+        TEST_ASSERT_EQUAL(-100, result);
+
+        Verify(Method(ArduinoFake(Print), availableForWrite)).Once();
+    }
+
     void test_print_variables(void)
     {
         char char_var = 'A';
@@ -103,6 +115,7 @@ namespace PrintTest
     {
         unity_filename_helper_t _ufname_helper(__FILE__);
 
+        RUN_TEST(PrintTest::test_availableForWrite);
         RUN_TEST(PrintTest::test_print_variables);
         RUN_TEST(PrintTest::test_println_variables);
     }
