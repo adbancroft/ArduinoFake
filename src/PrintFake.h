@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ArduinoFake.h"
 #include "arduino/Print.h"
 
 struct PrintFake

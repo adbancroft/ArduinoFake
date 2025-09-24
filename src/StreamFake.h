@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ArduinoFake.h"
 #include "PrintFake.h"
 #include "arduino/Stream.h"
 
