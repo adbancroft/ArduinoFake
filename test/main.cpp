@@ -29,6 +29,11 @@ void setUp(void)
     ArduinoFakeReset();
 }
 
+void tearDown(void)
+{
+    // Required by Unity v2.6
+}
+
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
