@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -130,6 +131,8 @@ namespace ArduinoContextTest
 
     void run_tests(void)
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
+
         RUN_TEST(ArduinoContextTest::test_single_instance);
         RUN_TEST(ArduinoContextTest::test_reset);
         RUN_TEST(ArduinoContextTest::test_function_mock);

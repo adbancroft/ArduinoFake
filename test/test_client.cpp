@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -143,6 +144,8 @@ namespace ClientTest
 
     void run_tests()
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
+        
         RUN_TEST(ClientTest::test_basics);
         RUN_TEST(ClientTest::test_connect);
         RUN_TEST(ClientTest::test_write);

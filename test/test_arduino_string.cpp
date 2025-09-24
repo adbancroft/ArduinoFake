@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -33,6 +34,7 @@ namespace ArduinoStringTest
 
     void run_tests()
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
         RUN_TEST(ArduinoStringTest::test_constructors);
     }
 }

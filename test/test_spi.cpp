@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -40,5 +41,10 @@ void test_basics(void) {
   Verify(OverloadedMethod(ArduinoFake(SPI), transfer, void(void*, size_t))).Once();
 }
 
-void run_tests() { RUN_TEST(SpiTest::test_basics); }
+void run_tests() 
+{ 
+  unity_filename_helper_t _ufname_helper(__FILE__);
+  
+  RUN_TEST(SpiTest::test_basics);
+}
 }  // namespace SpiTest

@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -169,6 +170,8 @@ namespace StreamTest
 
     void run_tests()
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
+
         RUN_TEST(StreamTest::test_extends_print);
         RUN_TEST(StreamTest::test_stream_basics);
         RUN_TEST(StreamTest::test_stream_find);

@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -80,6 +81,8 @@ namespace SerialTest
 
     void run_tests()
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
+
         RUN_TEST(SerialTest::test_extends_stream);
         RUN_TEST(SerialTest::test_global_serial);
         RUN_TEST(SerialTest::test_basics);

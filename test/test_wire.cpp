@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -103,9 +104,11 @@ void test_basics(void) {
 }
 
 void run_tests() {
-  RUN_TEST(WireTest::test_extends_stream);
-  RUN_TEST(WireTest::test_global_wire);
-  RUN_TEST(WireTest::test_basics);
+    unity_filename_helper_t _ufname_helper(__FILE__);
+
+    RUN_TEST(WireTest::test_extends_stream);
+    RUN_TEST(WireTest::test_global_wire);
+    RUN_TEST(WireTest::test_basics);
 }
 } // namespace WireTest
 
