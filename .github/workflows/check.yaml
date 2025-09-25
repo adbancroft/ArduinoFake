@@ -3,19 +3,38 @@ name: Check
 on: [push, pull_request]
 
 jobs:
-  build:
+  unit-tests:
     runs-on: ${{ matrix.os }}
+
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+          os:
+              - ubuntu-latest
+              #- windows-latest
+          pio_env:
+              - native
+              #- Win32
+          # exclude:
+          #     - os: ubuntu-latest
+          #       pio_env: Win32
+          #     - os: windows-latest
+          #       pio_env: native
+
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Tests
-        run: make
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade platformio
+      
+      - name: Run unit tests
+        run: platformio test -v -e ${{ matrix.pio_env }}
 
   examples:
     runs-on: ${{ matrix.os }}
