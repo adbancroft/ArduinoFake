@@ -130,3 +130,29 @@ void yield()
 {
     ArduinoFakeInstance(Function)->yield();
 }
+
+
+uint8_t digitalPinToPort(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->digitalPinToPort(pin);
+}
+uint8_t digitalPinToBitMask(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->digitalPinToBitMask(pin);
+}
+uint8_t digitalPinToTimer(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->digitalPinToTimer(pin);
+}
+volatile uint8_t * portOutputRegister(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->portOutputRegister(pin);
+}
+volatile uint8_t * portInputRegister(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->portInputRegister(pin);
+}
+volatile uint8_t * portModeRegister(uint8_t pin)
+{
+    return ArduinoFakeInstance(Function)->portModeRegister(pin);
+}

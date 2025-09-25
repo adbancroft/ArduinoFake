@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
+#include <stdint.h>
 #include "unity_filename_helper.h"
 
 using namespace fakeit;
@@ -202,6 +203,63 @@ static void test_map(void)
     Verify(Method(ArduinoFake(), map).Using(50, 0, 100, 0, 10)).Once();
 }
 
+static void test_digitalPinToPort(void)
+{
+    When(Method(ArduinoFake(), digitalPinToPort)).Return(5);
+
+    TEST_ASSERT_EQUAL(5, digitalPinToPort(50));
+
+    Verify(Method(ArduinoFake(), digitalPinToPort)).Once();
+}
+
+static void test_digitalPinToBitMask(void)
+{
+    When(Method(ArduinoFake(), digitalPinToBitMask)).Return(5);
+
+    TEST_ASSERT_EQUAL(5, digitalPinToBitMask(50));
+
+    Verify(Method(ArduinoFake(), digitalPinToBitMask)).Once();
+}
+
+static void test_digitalPinToTimer(void)
+{
+    When(Method(ArduinoFake(), digitalPinToTimer)).Return(5);
+
+    TEST_ASSERT_EQUAL(5, digitalPinToTimer(50));
+
+    Verify(Method(ArduinoFake(), digitalPinToTimer)).Once();
+}
+
+static void test_portOutputRegister(void)
+{
+    volatile uint8_t expected = 5;
+    When(Method(ArduinoFake(), portOutputRegister)).Return(&expected);
+
+    TEST_ASSERT_EQUAL(5, *portOutputRegister(50));
+
+    Verify(Method(ArduinoFake(), portOutputRegister)).Once();
+}
+
+static void test_portInputRegister(void)
+{
+    volatile uint8_t expected = 5;
+    When(Method(ArduinoFake(), portInputRegister)).Return(&expected);
+
+    TEST_ASSERT_EQUAL(5, *portInputRegister(50));
+
+    Verify(Method(ArduinoFake(), portInputRegister)).Once();
+}
+
+static void test_portModeRegister(void)
+{
+    volatile uint8_t expected = 5;
+    When(Method(ArduinoFake(), portModeRegister)).Return(&expected);
+
+    TEST_ASSERT_EQUAL(5, *portModeRegister(50));
+
+    Verify(Method(ArduinoFake(), portModeRegister)).Once();
+}
+
 namespace FunctionTest
 {
     void run_tests(void)
@@ -223,5 +281,11 @@ namespace FunctionTest
         RUN_TEST(test_random);
         RUN_TEST(test_tone);
         RUN_TEST(test_map);
+        RUN_TEST(test_digitalPinToPort);
+        RUN_TEST(test_digitalPinToBitMask);
+        RUN_TEST(test_digitalPinToTimer);
+        RUN_TEST(test_portOutputRegister);
+        RUN_TEST(test_portInputRegister);
+        RUN_TEST(test_portModeRegister);
     }
 }

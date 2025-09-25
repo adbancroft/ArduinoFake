@@ -42,4 +42,11 @@ struct FunctionFake
     virtual long map(long, long, long, long, long) = 0;
 
     virtual void yield() = 0;
+
+    virtual uint8_t digitalPinToPort(uint8_t pin) = 0;
+    virtual uint8_t digitalPinToBitMask(uint8_t pin) = 0;
+    virtual uint8_t digitalPinToTimer(uint8_t pin) = 0;
+    virtual volatile uint8_t * portOutputRegister(uint8_t pin) = 0;
+    virtual volatile uint8_t * portInputRegister(uint8_t pin) = 0;
+    virtual volatile uint8_t * portModeRegister(uint8_t pin) = 0;
 };
