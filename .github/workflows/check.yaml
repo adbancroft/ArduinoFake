@@ -9,13 +9,13 @@ jobs:
     strategy:
       matrix:
           os:
-              - ubuntu-latest
+              - ubuntu-22.04
               #- windows-latest
           pio_env:
               - native
               #- Win32
           # exclude:
-          #     - os: ubuntu-latest
+          #     - os: ubuntu-22.04
           #       pio_env: Win32
           #     - os: windows-latest
           #       pio_env: native
