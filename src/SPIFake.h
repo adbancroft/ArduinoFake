@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ArduinoFake.h"
 #include "arduino/SPI.h"
 
 struct SPIFake {
