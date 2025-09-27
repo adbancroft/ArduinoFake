@@ -1,6 +1,11 @@
 #include "FunctionFake.h"
 #include "ArduinoFake.h"
 
+void init(void)
+{
+    ArduinoFakeInstance(Function)->init();
+}
+
 void pinMode(uint8_t pin, uint8_t mode)
 {
     ArduinoFakeInstance(Function)->pinMode(pin, mode);

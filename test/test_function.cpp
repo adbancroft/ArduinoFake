@@ -7,6 +7,15 @@ using namespace fakeit;
 
 namespace FunctionTest
 {
+    void test_init(void)
+    {
+        When(Method(ArduinoFake(), init)).AlwaysReturn();
+
+        init();
+
+        Verify(Method(ArduinoFake(), init)).Once();
+    }
+
     void test_timestamps(void)
     {
         When(Method(ArduinoFake(), micros)).AlwaysReturn(100000);
@@ -200,6 +209,7 @@ namespace FunctionTest
     {
         unity_filename_helper_t _ufname_helper(__FILE__);
 
+        RUN_TEST(test_init);
         RUN_TEST(FunctionTest::test_timestamps);
         RUN_TEST(FunctionTest::test_pin_mode);
         RUN_TEST(FunctionTest::test_digital_pin);
