@@ -8,13 +8,24 @@ struct EEPROMClass {
   virtual uint16_t length();
   /*
   EERef operator[](const int idx);
-
-  // TODO: How to implement this functionality??
-  // https://docs.arduino.cc/learn/built-in-libraries/eeprom
-  template <typename T> T &get(int idx, T &t);
-
-  template <typename T> const T &put(int idx, const T &t);
-  */
-};
+   */
+  template< typename T > T &get( int idx, T &t ){
+      unsigned char *ptr = (unsigned char*) &t;
+      for( int count = sizeof(T) ; count ; --count, ++idx )
+      {
+        *ptr++ = read( idx );
+      }
+      return t;
+  }
+ 
+  template< typename T > const T &put( int idx, const T &t ){
+      const unsigned char *ptr = (const unsigned char*) &t;
+      for( int count = sizeof(T) ; count ; --count, ++idx )
+      {
+        update( idx, *ptr++ );
+      }
+      return t;
+  }
+ };
 
 extern EEPROMClass EEPROM;

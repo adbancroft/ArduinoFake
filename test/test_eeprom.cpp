@@ -32,11 +32,42 @@ void test_basics(void) {
   Verify(OverloadedMethod(ArduinoFake(EEPROM), length, uint16_t(void))).Once();
 }
 
+static void test_get(void) {
+    When(Method(ArduinoFake(EEPROM), read)).AlwaysReturn((uint8_t)INT8_MAX);
+
+    uint16_t arr[] = { UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX };
+    EEPROM.get(0, arr);
+
+    Verify(Method(ArduinoFake(EEPROM), read)).Exactly(sizeof(arr));
+
+    constexpr uint16_t expected = INT8_MAX | (INT8_MAX << 8U);
+    TEST_ASSERT_EQUAL(expected, arr[0]);
+    TEST_ASSERT_EQUAL(expected, arr[1]);
+    TEST_ASSERT_EQUAL(expected, arr[2]);
+    TEST_ASSERT_EQUAL(expected, arr[3]);
+    TEST_ASSERT_EQUAL(expected, arr[4]);
+}
+
+static void test_put(void) {
+    When(Method(ArduinoFake(EEPROM), update)).AlwaysReturn();
+
+    const int16_t arr[] = { INT16_MAX, INT16_MIN };
+    constexpr int idx = 101;
+    EEPROM.put(idx, arr);
+
+    const uint8_t *pSource = (const uint8_t *)arr;
+    for (int i = 0; i < sizeof(arr); ++i) {
+        Verify(Method(ArduinoFake(EEPROM), update).Using(idx + i, pSource[i])).Once();
+    }
+}
+
 void run_tests() 
 { 
     unity_filename_helper_t _ufname_helper(__FILE__);
 
     RUN_TEST(EEPROMTest::test_basics);
+    RUN_TEST(EEPROMTest::test_get);
+    RUN_TEST(EEPROMTest::test_put);
 }
 
 } // namespace EEPROMTest
