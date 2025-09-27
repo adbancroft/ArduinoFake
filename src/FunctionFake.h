@@ -5,8 +5,6 @@
 struct FunctionFake
 {
     virtual void init(void) = 0;
-    virtual void loop(void) = 0;
-    virtual void setup(void) = 0;
 
     virtual void pinMode(uint8_t, uint8_t) = 0;
     virtual void digitalWrite(uint8_t, uint8_t) = 0;
