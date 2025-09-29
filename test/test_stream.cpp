@@ -45,6 +45,8 @@ static void test_stream_basics(void)
     When(Method(ArduinoFake(Stream), read)).Return(11, 12, 13);
     When(Method(ArduinoFake(Stream), peek)).Return(21, 22, 23);
     When(Method(ArduinoFake(Stream), flush)).AlwaysReturn();
+    When(Method(ArduinoFake(Stream), setTimeout)).AlwaysReturn();
+    When(Method(ArduinoFake(Stream), getTimeout)).AlwaysReturn(11);
 
     Stream* stream = ArduinoFakeMock(Stream);
 
@@ -60,12 +62,17 @@ static void test_stream_basics(void)
     TEST_ASSERT_EQUAL(22, stream->peek());
     TEST_ASSERT_EQUAL(23, stream->peek());
 
-    stream->flush();
+    TEST_ASSERT_EQUAL(11, stream->getTimeout());
 
+    stream->flush();
+    stream->setTimeout(1L);
+    
     Verify(Method(ArduinoFake(Stream), available)).Exactly(3_Times);
     Verify(Method(ArduinoFake(Stream), read)).Exactly(3_Times);
     Verify(Method(ArduinoFake(Stream), peek)).Exactly(3_Times);
     Verify(Method(ArduinoFake(Stream), flush)).Once();
+    Verify(Method(ArduinoFake(Stream), getTimeout)).Once();
+    Verify(Method(ArduinoFake(Stream), setTimeout)).Once();
 }
 
 static void test_stream_find(void)

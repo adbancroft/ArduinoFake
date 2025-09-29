@@ -48,29 +48,39 @@ class StreamFakeProxy : public Stream, public PrintFakeProxy
             streamFake = fake;
         }
 
-        size_t write(uint8_t value)
+        size_t write(uint8_t value) override
         {
             return streamFake->write(value);
         }
 
-        int available()
+        int available() override
         {
             return streamFake->available();
         }
 
-        int read()
+        int read() override
         {
             return streamFake->read();
         }
 
-        int peek()
+        int peek() override
         {
             return streamFake->peek();
         }
 
-        void flush()
+        void flush() override
         {
             streamFake->flush();
+        }
+
+        void setTimeout(unsigned long timeout) override
+        {
+            getFake()->setTimeout(timeout);
+        }
+    
+        unsigned long getTimeout(void) override
+        {
+            return getFake()->getTimeout();
         }
 
         StreamFake* getFake()
