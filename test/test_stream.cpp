@@ -88,11 +88,11 @@ namespace StreamTest
         char* char_ptr2 = &char_val2;
         char* terminator_ptr = &terminator;
 
-        When(OverloadedMethod(ArduinoFake(Stream), find, bool(char*))).Return(true, false);
-        When(OverloadedMethod(ArduinoFake(Stream), find, bool(char*, size_t))).Return(true, false);
+        When(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*))).Return(true, false);
+        When(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*, size_t))).Return(true, false);
 
-        When(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(char*, char*))).Return(true, false);
-        When(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(char*, size_t, char*, size_t))).Return(true, false);
+        When(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(const char*, const char*))).Return(true, false);
+        When(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(const char*, size_t, const char*, size_t))).Return(true, false);
 
         Stream* stream = ArduinoFakeMock(Stream);
 
@@ -108,14 +108,14 @@ namespace StreamTest
         TEST_ASSERT_EQUAL(true, stream->findUntil(char_ptr1, 10, terminator_ptr, 11));
         TEST_ASSERT_EQUAL(false, stream->findUntil(char_ptr2, 20, terminator_ptr, 21));
 
-        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(char*)).Using(char_ptr1)).Once();
-        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(char*)).Using(char_ptr2)).Once();
+        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*)).Using(char_ptr1)).Once();
+        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*)).Using(char_ptr2)).Once();
 
-        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(char*, size_t)).Using(char_ptr1, 10)).Once();
-        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(char*, size_t)).Using(char_ptr2, 20)).Once();
+        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*, size_t)).Using(char_ptr1, 10)).Once();
+        Verify(OverloadedMethod(ArduinoFake(Stream), find, bool(const char*, size_t)).Using(char_ptr2, 20)).Once();
 
-        Verify(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(char*, char*))).Exactly(2_Times);
-        Verify(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(char*, size_t, char*, size_t))).Exactly(2_Times);
+        Verify(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(const char*, const char*))).Exactly(2_Times);
+        Verify(OverloadedMethod(ArduinoFake(Stream), findUntil, bool(const char*, size_t, const char*, size_t))).Exactly(2_Times);
     }
 
     void test_stream_parse(void)
