@@ -78,8 +78,8 @@ class Stream : public Print
 
   bool find(char target) { return find (&target, 1); }
 
-  bool findUntil(const char *target, char *terminator);   // as find but search ends if the terminator string is found
-  bool findUntil(const uint8_t *target, char *terminator) { return findUntil((const char *)target, terminator); }
+  bool findUntil(const char *target, const char *terminator);   // as find but search ends if the terminator string is found
+  bool findUntil(const uint8_t *target, const char *terminator) { return findUntil((const char *)target, terminator); }
 
   bool findUntil(const char *target, size_t targetLen, const char *terminate, size_t termLen);   // as above but search ends if the terminate string is found
   bool findUntil(const uint8_t *target, size_t targetLen, const char *terminate, size_t termLen) {return findUntil((const char *)target, targetLen, terminate, termLen); }

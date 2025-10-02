@@ -16,7 +16,7 @@ bool Stream::find(const char *target, size_t length)
     return ArduinoFakeInstance(Stream, this)->find(target, length);
 }
 
-bool Stream::findUntil(const char *target, char *terminator)
+bool Stream::findUntil(const char *target, const char *terminator)
 {
     return ArduinoFakeInstance(Stream, this)->findUntil(target, terminator);
 }
