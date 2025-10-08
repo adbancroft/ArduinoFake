@@ -136,6 +136,7 @@ class ArduinoFakeContext
             this->Mocks.SPI.Reset();
             this->Mocks.EEPROM.Reset();
 
+            Mapping.clear();
             Mapping[&::Serial] = this->Serial();
             Mapping[&::Wire] = this->Wire();
             Mapping[&::SPI] = this->SPI();
