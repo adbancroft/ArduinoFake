@@ -31,7 +31,7 @@ namespace OverrideableProxiedArduinoFakeTTest
 
         // Should return the alternate, since it's now overriden
         ArduinoFake_t<IDummy> alternateFake;
-        overrides.setOverride(&proxy, alternateFake.getFake());
+        overrides.setOverride(&proxy, &alternateFake);
         TEST_ASSERT_EQUAL_PTR(alternateFake.getFake(), subject.getFake<IArduino>(&proxy));
     }
 

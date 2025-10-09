@@ -118,9 +118,9 @@ struct OverrideableProxiedArduinoFake_t : public BaseT
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
-        void *pOverride = _overrides.getOverride(instance);
+        ArduinoFake_t<FakeT> *pOverride = static_cast<ArduinoFake_t<FakeT> *>(_overrides.getOverride(instance));
         if (pOverride!=nullptr) {
-            return (FakeT*)pOverride;
+            return pOverride->getFake();
         }
         return BaseT::getFake(instance);
     }
@@ -198,10 +198,10 @@ public:
         _EEPROM.reset();
 
         _fakeOverrides.reset();
-        _fakeOverrides.setOverride(&::Serial, this->Serial());
-        _fakeOverrides.setOverride(&::Wire, this->Wire());
-        _fakeOverrides.setOverride(&::SPI, this->SPI());
-        _fakeOverrides.setOverride(&::EEPROM, this->EEPROM());
+        _fakeOverrides.setOverride(&::Serial, &_Serial);
+        _fakeOverrides.setOverride(&::Wire, &_Wire);
+        _fakeOverrides.setOverride(&::SPI, &_SPI);
+        _fakeOverrides.setOverride(&::EEPROM, &_EEPROM);
     }
 
 };
