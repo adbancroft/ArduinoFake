@@ -69,11 +69,8 @@ struct ProxiedArduinoFake_t : public BaseT
     using BaseT::getFake;
     
     template <class ArduinoT>
-    FakeT* getFake(void* pOverride, ArduinoT *instance)
+    FakeT* getFake(ArduinoT *instance)
     {
-        if (pOverride!=nullptr) {
-            return (FakeT*)pOverride;
-        }
         if (dynamic_cast<ProxyT*>(instance)) {
             return dynamic_cast<ProxyT*>(instance)->getFake();
         }
@@ -104,20 +101,44 @@ private:
     std::unordered_map<void*, void*> _mapping;
 };
 
+template <class FakeT, class ProxyT, typename BaseT = ProxiedArduinoFake_t<FakeT, ProxyT>>
+struct OverrideableProxiedArduinoFake_t : public BaseT
+{
+    FakeOverride_t &_overrides;
+
+    OverrideableProxiedArduinoFake_t(FakeOverride_t &overrides)
+        : BaseT()
+        , _overrides(overrides)
+    {
+    }
+
+    // Pull in base class getFake()
+    using BaseT::getFake;
+    
+    template <class ArduinoT>
+    FakeT* getFake(ArduinoT *instance)
+    {
+        void *pOverride = _overrides.getOverride(instance);
+        if (pOverride!=nullptr) {
+            return (FakeT*)pOverride;
+        }
+        return BaseT::getFake(instance);
+    }
+};
+
 class ArduinoFakeContext
 {
 public:
+    FakeOverride_t _fakeOverrides;
     ArduinoFake_t<FunctionFake> _Function;
-    ProxiedArduinoFake_t<SerialFake, SerialFakeProxy> _Serial;
-    ProxiedArduinoFake_t<WireFake, WireFakeProxy> _Wire;
-    ProxiedArduinoFake_t<StreamFake, StreamFakeProxy> _Stream;
-    ProxiedArduinoFake_t<ClientFake, ClientFakeProxy> _Client;
-    ProxiedArduinoFake_t<PrintFake, PrintFakeProxy> _Print;
-    ProxiedArduinoFake_t<SPIFake, SPIFakeProxy> _SPI;
-    ProxiedArduinoFake_t<EEPROMFake, EEPROMFakeProxy> _EEPROM;
+    OverrideableProxiedArduinoFake_t<SerialFake, SerialFakeProxy> _Serial;
+    OverrideableProxiedArduinoFake_t<WireFake, WireFakeProxy> _Wire;
+    OverrideableProxiedArduinoFake_t<StreamFake, StreamFakeProxy> _Stream;
+    OverrideableProxiedArduinoFake_t<ClientFake, ClientFakeProxy> _Client;
+    OverrideableProxiedArduinoFake_t<PrintFake, PrintFakeProxy> _Print;
+    OverrideableProxiedArduinoFake_t<SPIFake, SPIFakeProxy> _SPI;
+    OverrideableProxiedArduinoFake_t<EEPROMFake, EEPROMFakeProxy> _EEPROM;
     
-    FakeOverride_t fakeOverrides;
-
 #define _ArduinoFakeInstanceGetter1(mock) \
     mock##Fake* mock() \
     { \
@@ -138,7 +159,7 @@ public:
 #define _ArduinoFakeInstanceGetter2(name, clazz) \
     name##Fake* name(class clazz* instance) \
     { \
-        return this->_##name.getFake(getGlobalOverride(instance), instance); \
+        return this->_##name.getFake(instance); \
     }
 
     _ArduinoFakeInstanceGetter2(Print, Print)
@@ -152,6 +173,15 @@ public:
 #undef _ArduinoFakeInstanceGetter2
 
     ArduinoFakeContext()
+        : _fakeOverrides()
+        , _Function()
+        , _Serial(_fakeOverrides)
+        , _Wire(_fakeOverrides)
+        , _Stream(_fakeOverrides)
+        , _Client(_fakeOverrides)
+        , _Print(_fakeOverrides)
+        , _SPI(_fakeOverrides)
+        , _EEPROM(_fakeOverrides)
     {
         this->reset();
     }
@@ -167,17 +197,13 @@ public:
         _SPI.reset();
         _EEPROM.reset();
 
-        fakeOverrides.reset();
-        fakeOverrides.setOverride(&::Serial, this->Serial());
-        fakeOverrides.setOverride(&::Wire, this->Wire());
-        fakeOverrides.setOverride(&::SPI, this->SPI());
-        fakeOverrides.setOverride(&::EEPROM, this->EEPROM());
+        _fakeOverrides.reset();
+        _fakeOverrides.setOverride(&::Serial, this->Serial());
+        _fakeOverrides.setOverride(&::Wire, this->Wire());
+        _fakeOverrides.setOverride(&::SPI, this->SPI());
+        _fakeOverrides.setOverride(&::EEPROM, this->EEPROM());
     }
 
-    void *getGlobalOverride(void *instance)
-    {
-        return fakeOverrides.getOverride(instance);
-    }
 };
 
 ArduinoFakeContext* getArduinoFakeContext();
