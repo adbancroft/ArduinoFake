@@ -69,8 +69,11 @@ struct ProxiedArduinoFake_t : public BaseT
     using BaseT::getFake;
     
     template <class ArduinoT>
-    FakeT* getFake(ArduinoT *instance)
+    FakeT* getFake(void* pOverride, ArduinoT *instance)
     {
+        if (pOverride!=nullptr) {
+            return (FakeT*)pOverride;
+        }
         if (dynamic_cast<ProxyT*>(instance)) {
             return dynamic_cast<ProxyT*>(instance)->getFake();
         }
@@ -112,10 +115,7 @@ public:
 #define _ArduinoFakeInstanceGetter2(name, clazz) \
     name##Fake* name(class clazz* instance) \
     { \
-        if (Mapping[instance]) { \
-            return (name##Fake*) Mapping[instance]; \
-        } \
-        return this->_##name.getFake(instance); \
+        return this->_##name.getFake(getGlobalOverride(instance), instance); \
     }
 
     _ArduinoFakeInstanceGetter2(Print, Print)
@@ -149,6 +149,12 @@ public:
         Mapping[&::Wire] = this->Wire();
         Mapping[&::SPI] = this->SPI();
         Mapping[&::EEPROM] = this->EEPROM();
+    }
+
+    void *getGlobalOverride(void *instance)
+    {
+        auto iter = Mapping.find(instance);
+        return iter==Mapping.end() ? nullptr : iter->second;
     }
 };
 
