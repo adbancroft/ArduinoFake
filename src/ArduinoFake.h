@@ -81,6 +81,29 @@ struct ProxiedArduinoFake_t : public BaseT
     }
 };
 
+class FakeOverride_t
+{
+public:
+    void reset(void)
+    {
+        _mapping.clear();
+    }
+
+    void *getOverride(void *instance)
+    {
+        auto iter = _mapping.find(instance);
+        return iter==_mapping.end() ? nullptr : iter->second;
+    }
+
+    void setOverride(void *instance, void *override)
+    {
+        _mapping[instance] = override;
+    }
+
+private:
+    std::unordered_map<void*, void*> _mapping;
+};
+
 class ArduinoFakeContext
 {
 public:
@@ -93,7 +116,7 @@ public:
     ProxiedArduinoFake_t<SPIFake, SPIFakeProxy> _SPI;
     ProxiedArduinoFake_t<EEPROMFake, EEPROMFakeProxy> _EEPROM;
     
-    std::unordered_map<void*, void*> Mapping;
+    FakeOverride_t fakeOverrides;
 
 #define _ArduinoFakeInstanceGetter1(mock) \
     mock##Fake* mock() \
@@ -144,17 +167,16 @@ public:
         _SPI.reset();
         _EEPROM.reset();
 
-        Mapping.clear();
-        Mapping[&::Serial] = this->Serial();
-        Mapping[&::Wire] = this->Wire();
-        Mapping[&::SPI] = this->SPI();
-        Mapping[&::EEPROM] = this->EEPROM();
+        fakeOverrides.reset();
+        fakeOverrides.setOverride(&::Serial, this->Serial());
+        fakeOverrides.setOverride(&::Wire, this->Wire());
+        fakeOverrides.setOverride(&::SPI, this->SPI());
+        fakeOverrides.setOverride(&::EEPROM, this->EEPROM());
     }
 
     void *getGlobalOverride(void *instance)
     {
-        auto iter = Mapping.find(instance);
-        return iter==Mapping.end() ? nullptr : iter->second;
+        return fakeOverrides.getOverride(instance);
     }
 };
 
