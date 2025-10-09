@@ -32,7 +32,7 @@
     new mock##FakeProxy(ArduinoFakeInstance(mock))
 
 #define _ArduinoFakeGetMock(mock) \
-    getArduinoFakeContext()->_##mock.Fake
+    getArduinoFakeContext()->_##mock
 
 #define _ArduinoFakeGetFunction() _ArduinoFakeGetMock(Function)
 #define _ArduinoFakeGetSerial() _ArduinoFakeGetMock(Serial)
@@ -46,28 +46,9 @@
 
 #define ArduinoFake(mock) _ArduinoFakeGet##mock()
 
-template <class FakeT>
-struct ArduinoFake_t
-{
-    fakeit::Mock<FakeT> Fake;
-
-    void Reset(void)
-    {
-        Fake.Reset();
-    }
-
-    FakeT* getFake(void)
-    {
-        return &Fake.get();
-    }
-};
-
-template <class FakeT, class ProxyT, typename BaseT = ArduinoFake_t<FakeT>>
+template <class FakeT, class ProxyT, typename BaseT = fakeit::Mock<FakeT>>
 struct ProxiedArduinoFake_t : public BaseT
-{
-    // Pull in base class getFake()
-    using BaseT::getFake;
-    
+{  
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
@@ -111,16 +92,13 @@ struct OverrideableProxiedArduinoFake_t : public BaseT
         , _overrides(overrides)
     {
     }
-
-    // Pull in base class getFake()
-    using BaseT::getFake;
-    
+   
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
-        ArduinoFake_t<FakeT> *pOverride = static_cast<ArduinoFake_t<FakeT> *>(_overrides.getOverride(instance));
+        fakeit::Mock<FakeT> *pOverride = static_cast<fakeit::Mock<FakeT> *>(_overrides.getOverride(instance));
         if (pOverride!=nullptr) {
-            return pOverride->getFake();
+            return &pOverride->get();
         }
         return BaseT::getFake(instance);
     }
@@ -130,7 +108,7 @@ class ArduinoFakeContext
 {
 public:
     FakeOverride_t _fakeOverrides;
-    ArduinoFake_t<FunctionFake> _Function;
+    fakeit::Mock<FunctionFake> _Function;
     OverrideableProxiedArduinoFake_t<SerialFake, SerialFakeProxy> _Serial;
     OverrideableProxiedArduinoFake_t<WireFake, WireFakeProxy> _Wire;
     OverrideableProxiedArduinoFake_t<StreamFake, StreamFakeProxy> _Stream;
@@ -142,7 +120,7 @@ public:
 #define _ArduinoFakeInstanceGetter1(mock) \
     mock##Fake* mock() \
     { \
-        return this->_##mock.getFake(); \
+        return &this->_##mock.get(); \
     }
 
     _ArduinoFakeInstanceGetter1(Print)

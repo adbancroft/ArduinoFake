@@ -16,7 +16,6 @@ using namespace fakeit;
 #include "test_client.h"
 #include "test_arduino_string.h"
 #include "test_include.h"
-#include "test_ArduinoFake_t.h"
 #include "test_ProxiedArduinoFake_t.h"
 #include "test_OverrideableProxiedArduinoFake_t.h"
 
@@ -48,7 +47,6 @@ int main(int argc, char **argv)
     RUN_TEST_GROUP(EEPROMTest);
     RUN_TEST_GROUP(ClientTest);
     RUN_TEST_GROUP(IncludeTest);
-    RUN_TEST_GROUP(ArduinoFakeTTest);
     RUN_TEST_GROUP(ProxiedArduinoFakeTTest);
     RUN_TEST_GROUP(OverrideableProxiedArduinoFakeTTest);
 

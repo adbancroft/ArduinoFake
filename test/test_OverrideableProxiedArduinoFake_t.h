@@ -30,9 +30,9 @@ namespace OverrideableProxiedArduinoFakeTTest
         TEST_ASSERT_EQUAL_PTR(proxy.getFake(), subject.getFake<IArduino>(&proxy));
 
         // Should return the alternate, since it's now overriden
-        ArduinoFake_t<IDummy> alternateFake;
+        fakeit::Mock<IDummy> alternateFake;
         overrides.setOverride(&proxy, &alternateFake);
-        TEST_ASSERT_EQUAL_PTR(alternateFake.getFake(), subject.getFake<IArduino>(&proxy));
+        TEST_ASSERT_EQUAL_PTR(&alternateFake.get(), subject.getFake<IArduino>(&proxy));
     }
 
     void run_tests(void)
