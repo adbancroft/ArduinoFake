@@ -30,6 +30,7 @@ void setUp(void)
 {
     ArduinoFakeReset();
 }
+void tearDown(void) {}
 
 int main(int argc, char **argv)
 {
