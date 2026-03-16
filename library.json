@@ -15,8 +15,15 @@
     "test"
   ],
   "build": {
-    "libCompatMode": "off"
+    "libCompatMode": "off",
+    "flags": [
+        "-I src/arduino"
+    ]
   },
   "frameworks": "arduino",
-  "platforms": "native"
+  "platforms": "native",
+  "dependencies":
+  {
+    "fakeit": "https://github.com/eranpeer/FakeIt#2.4.0"
+  }
 }

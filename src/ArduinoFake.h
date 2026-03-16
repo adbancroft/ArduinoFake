@@ -9,7 +9,7 @@
 #include <cstring>
 #include <cstdint>
 #include <stdexcept>
-#include "fakeit.hpp"
+#include <single_header/standalone/fakeit.hpp>
 
 #include "arduino/Arduino.h"
 
