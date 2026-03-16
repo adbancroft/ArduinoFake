@@ -72,7 +72,7 @@ static void test_reset_wire(void)
 
 static void test_reset_stream(void)
 {
-    auto method = OverloadedMethod(ArduinoFake(Stream), find, bool(char *));
+    auto method = OverloadedMethod(ArduinoFake(Stream), find, bool(const char *));
     When(method).AlwaysReturn(false);
     assert_test_reset(method, []() { 
         char toFind[] = "abc";

@@ -6,22 +6,22 @@ void Stream::setTimeout(unsigned long timeout)
     ArduinoFakeInstance(Stream, this)->setTimeout(timeout);
 }
 
-bool Stream::find(char *target)
+bool Stream::find(const char *target)
 {
     return ArduinoFakeInstance(Stream, this)->find(target);
 }
 
-bool Stream::find(char *target, size_t length)
+bool Stream::find(const char *target, size_t length)
 {
     return ArduinoFakeInstance(Stream, this)->find(target, length);
 }
 
-bool Stream::findUntil(char *target, char *terminator)
+bool Stream::findUntil(const char *target, const char *terminator)
 {
     return ArduinoFakeInstance(Stream, this)->findUntil(target, terminator);
 }
 
-bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t termLen)
+bool Stream::findUntil(const char *target, size_t targetLen, const char *terminator, size_t termLen)
 {
     return ArduinoFakeInstance(Stream, this)->findUntil(target, targetLen, terminator, termLen);
 }
