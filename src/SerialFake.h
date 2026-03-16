@@ -14,7 +14,6 @@ struct SerialFake : public StreamFake
     virtual int available(void) = 0;
     virtual int peek(void) = 0;
     virtual int read(void) = 0;
-    virtual int availableForWrite(void) = 0;
     virtual void flush(void) = 0;
     virtual size_t write(uint8_t) = 0;
     virtual size_t write(const uint8_t*, size_t) = 0;

@@ -94,7 +94,6 @@ public:
 	virtual int available(void);
 	virtual int peek(void);
 	virtual int read(void);
-	int availableForWrite(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
 	virtual size_t write(const uint8_t*, size_t);

@@ -33,11 +33,6 @@ int Serial_::read(void)
     return ArduinoFakeInstance(Serial, this)->read();
 }
 
-int Serial_::availableForWrite(void)
-{
-    return ArduinoFakeInstance(Serial, this)->availableForWrite();
-}
-
 void Serial_::flush(void)
 {
     ArduinoFakeInstance(Serial, this)->flush();
