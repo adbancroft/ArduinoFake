@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 #include "arduino/SPI.h"
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -39,6 +40,7 @@ static void test_basics(void) {
 namespace SpiTest {
   void run_tests(void) 
   { 
+    unity_filename_helper_t _ufname_helper(__FILE__);
     RUN_TEST(test_basics);
   }
 }

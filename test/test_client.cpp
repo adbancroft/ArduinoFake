@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 static const char * localhost = "localhost";
 
@@ -143,6 +144,7 @@ namespace ClientTest
 {
     void run_tests(void)
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
         RUN_TEST(test_basics);
         RUN_TEST(test_connect);
         RUN_TEST(test_write);

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 static void test_constructors(void)
 {
@@ -31,6 +32,7 @@ namespace ArduinoStringTest
 {
     void run_tests(void)
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
         RUN_TEST(test_constructors);
     }
 }

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
+#include "unity_filename_helper.h"
 
 using namespace fakeit;
 
@@ -205,6 +206,7 @@ namespace FunctionTest
 {
     void run_tests(void)
     {
+        unity_filename_helper_t _ufname_helper(__FILE__);
         RUN_TEST(test_init);
         RUN_TEST(test_timestamps);
         RUN_TEST(test_pin_mode);
