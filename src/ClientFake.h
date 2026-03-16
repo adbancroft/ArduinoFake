@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ArduinoFake.h"
 #include "StreamFake.h"
 #include "arduino/Client.h"
 
