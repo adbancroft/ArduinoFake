@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fakeit.hpp"
+#include <cstdint>
 
 struct FunctionFake
 {

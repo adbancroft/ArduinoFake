@@ -18,5 +18,9 @@
     "libCompatMode": "off"
   },
   "frameworks": "arduino",
-  "platforms": "native"
+  "platforms": "native",
+  "dependencies":
+  {
+    "fakeit": "https://github.com/eranpeer/FakeIt#2.4.0"
+  }
 }
