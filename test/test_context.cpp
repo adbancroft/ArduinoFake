@@ -194,7 +194,7 @@ static void test_unknown_instance_exception(void)
     fakeit::Mock<Serial_> fake;
 
     try {
-        ArduinoFakeInstance(Print, &fake.get());
+        ArduinoFakeInstance(&fake.get());
     } catch (const std::runtime_error& e) {
         TEST_ASSERT_EQUAL_STRING("Unknown instance", e.what());
     }
@@ -203,7 +203,7 @@ static void test_unknown_instance_exception(void)
 static void test_getter_overload_with_proxy(void)
 {
     Serial_* serial = ArduinoFakeMock(Serial);
-    PrintFake* serialPrintFake = ArduinoFakeInstance(Stream, serial);
+    PrintFake* serialPrintFake = ArduinoFakeInstance(serial);
 
     TEST_ASSERT_EQUAL(getArduinoFakeContext()->Serial(), serialPrintFake);
     PrintFake* printFake = ArduinoFakeInstance0(Print);
@@ -213,7 +213,7 @@ static void test_getter_overload_with_proxy(void)
 static void test_getter_overload_with_mapping(void)
 {
     Serial_* serial = &::Serial;
-    PrintFake* serialPrintFake = ArduinoFakeInstance(Stream, serial);
+    PrintFake* serialPrintFake = ArduinoFakeInstance(serial);
 
     TEST_ASSERT_EQUAL(getArduinoFakeContext()->Serial(), serialPrintFake);
     PrintFake* printFake = ArduinoFakeInstance0(Print);

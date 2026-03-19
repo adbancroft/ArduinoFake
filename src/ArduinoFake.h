@@ -42,7 +42,7 @@
  #define ArduinoFakeInstance0(mock) \
     getArduinoFakeContext()->mock()
 
-#define ArduinoFakeInstance(mock, clazz) \
+#define ArduinoFakeInstance(clazz) \
     getArduinoFakeContext()->getFake(clazz)
 
 #define ArduinoFakeMock(mock) \
