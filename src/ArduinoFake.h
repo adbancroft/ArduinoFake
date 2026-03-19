@@ -63,9 +63,20 @@
 
 #define ArduinoFake(mock) _ArduinoFakeGet##mock()
 
+// Access fakeit::Mock<T>.get()
+// There is no equivalent in fakeit since Mock is a template 
+struct IFake
+{
+    // Ideally this have a templated return type, but then it can't be 
+    // virtual :-(
+    // We need this to be virtual to store instances in a map.
+    virtual void* toFake(void) = 0;
+};
+
 template <class FakeT, class ProxyT, typename BaseT = fakeit::Mock<FakeT>>
-struct ProxiedArduinoFake_t : public BaseT
+struct ProxiedArduinoFake_t : public BaseT, IFake
 {  
+    // Proxy to fake
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
@@ -74,8 +85,21 @@ struct ProxiedArduinoFake_t : public BaseT
         }
         throw std::runtime_error("Unknown instance");
     }
+
+    // Get the 'real' fake - the one that is actually mocked.
+    virtual void* toFake(void) override
+    {
+        return &fakeit::Mock<FakeT>::get();
+    }
 };
 
+// Maps from global instances to the equivalent IFake.
+// E.g. Serial => SerialFake
+//
+// Required to respect inherited classes.
+// E.g. Stream has 2 derived classes, Serial_ & TwoWire. Each has a global instance, Serial & Wire.
+// We want to allow different mock implementations *of the same Stream method* for Serial_ & TwoWire
+// and have the global instances use those different mocks.
 class FakeOverride_t
 {
 public:
@@ -84,19 +108,19 @@ public:
         _mapping.clear();
     }
 
-    void *getOverride(void *instance)
+    IFake *getOverride(void *instance)
     {
         auto iter = _mapping.find(instance);
         return iter==_mapping.end() ? nullptr : iter->second;
     }
 
-    void setOverride(void *instance, void *override)
+    void setOverride(void *instance, IFake *override)
     {
         _mapping[instance] = override;
     }
 
 private:
-    std::unordered_map<void*, void*> _mapping;
+    std::unordered_map<void*, IFake*> _mapping;
 };
 
 template <class FakeT, class ProxyT, typename BaseT = ProxiedArduinoFake_t<FakeT, ProxyT>>
@@ -113,9 +137,9 @@ struct OverrideableProxiedArduinoFake_t : public BaseT
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
-        fakeit::Mock<FakeT> *pOverride = static_cast<fakeit::Mock<FakeT> *>(_overrides.getOverride(instance));
+        auto *pOverride = _overrides.getOverride(instance);
         if (pOverride!=nullptr) {
-            return &pOverride->get();
+            return (FakeT*)pOverride->toFake();
         }
         return BaseT::getFake(instance);
     }

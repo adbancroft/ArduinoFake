@@ -32,7 +32,7 @@ static void test_getFake(void)
     TEST_ASSERT_EQUAL_PTR(proxy.getFake(), subject.getFake<IArduino>(&proxy));
 
     // Should return the alternate, since it's now overriden
-    fakeit::Mock<IDummy> alternateFake;
+    ProxiedArduinoFake_t<IArduino, IDummy> alternateFake;
     overrides.setOverride(&proxy, &alternateFake);
     TEST_ASSERT_EQUAL_PTR(&alternateFake.get(), subject.getFake<IArduino>(&proxy));
 }
