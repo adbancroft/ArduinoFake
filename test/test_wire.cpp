@@ -23,7 +23,7 @@ static void test_extends_stream(void) {
       .AlwaysReturn();
 
   Stream* stream(ArduinoFakeInstance0(Stream));
-  std::shared_ptr<TwoWire> wire(ArduinoFakeMock(Wire));
+  TwoWire* wire(ArduinoFakeInstance0(Wire));
 
   stream->print(stream_char_var);
   stream->print(stream_int_var, DEC);

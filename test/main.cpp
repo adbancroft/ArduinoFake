@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     RUN_TEST_GROUP(PrintTest);
     RUN_TEST_GROUP(StreamTest);
     RUN_TEST_GROUP(SerialTest);
-    // RUN_TEST_GROUP(WireTest);
+    RUN_TEST_GROUP(WireTest);
     // RUN_TEST_GROUP(SpiTest);
     RUN_TEST_GROUP(EEPROMTest);
     // RUN_TEST_GROUP(ClientTest);

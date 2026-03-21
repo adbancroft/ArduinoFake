@@ -60,7 +60,7 @@ static void test_reset_serial(void)
 {
     auto method = Method(ArduinoFake(Serial), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Serial))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(Serial))->end(); });
 }
 
 static void test_reset_wire(void)
@@ -202,8 +202,8 @@ static void test_unknown_instance_exception(void)
 
 static void test_getter_overload_with_proxy(void)
 {
-    std::shared_ptr<Serial_> serial(ArduinoFakeMock(Serial));
-    PrintFake* serialPrintFake = ArduinoFakeInstance(serial.get());
+    Serial_* serial(ArduinoFakeInstance0(Serial));
+    PrintFake* serialPrintFake = ArduinoFakeInstance(serial);
 
     TEST_ASSERT_EQUAL(getArduinoFakeContext()->Serial(), serialPrintFake);
     PrintFake* printFake = ArduinoFakeInstance0(Print);
