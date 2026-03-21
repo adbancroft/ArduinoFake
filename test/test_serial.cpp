@@ -23,11 +23,11 @@ static void test_extends_stream(void)
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(char))).AlwaysReturn();
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(int, int))).AlwaysReturn();
 
-    Stream* stream(ArduinoFakeInstance0(Stream));
-    SerialFake* serial(ArduinoFakeMock2(Serial));
+    Stream* pStream(ArduinoFakeInstance0(Stream));
+    Serial_* serial(ArduinoFakeInstance0(Serial));
 
-    stream->print(stream_char_var);
-    stream->print(stream_int_var, DEC);
+    pStream->print(stream_char_var);
+    pStream->print(stream_int_var, DEC);
 
     serial->print(print_char_var);
     serial->print(print_int_var, DEC);
