@@ -84,7 +84,7 @@ static void test_reset_client(void)
 {
     auto method = Method(ArduinoFake(Client), available);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Client))->available(); });
+    assert_test_reset(method, []() { ArduinoFakeInstance0(Client)->available(); });
 }
 
 static void test_reset_spi(void)
