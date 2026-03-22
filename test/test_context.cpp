@@ -67,7 +67,7 @@ static void test_reset_wire(void)
 {
     auto method = Method(ArduinoFake(Wire), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Wire))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(Wire))->end(); });
 }
 
 static void test_reset_stream(void)
@@ -91,14 +91,14 @@ static void test_reset_spi(void)
 {
     auto method = Method(ArduinoFake(SPI), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(SPI))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(SPI))->end(); });
 }
 
 static void test_reset_eeprom(void)
 {
     auto method = Method(ArduinoFake(EEPROM), length);
     When(method).AlwaysReturn(0xffff);
-    assert_test_reset(method, []() { (ArduinoFakeMock(EEPROM))->length(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(EEPROM))->length(); });
 }
 
 static void test_reset(void)

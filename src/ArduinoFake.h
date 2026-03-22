@@ -45,9 +45,6 @@
 #define ArduinoFakeInstance(clazz) \
     getArduinoFakeContext()->getFake(clazz)
 
-#define ArduinoFakeMock(mock) \
-    std::shared_ptr<mock##FakeProxy>(new mock##FakeProxy(ArduinoFakeInstance0(mock)))
-
 #define _ArduinoFakeGetMock(mock) \
     getArduinoFakeContext()->_##mock
 
@@ -62,8 +59,6 @@
 #define _ArduinoFakeGet() _ArduinoFakeGetMock(Function)
 
 #define ArduinoFake(mock) _ArduinoFakeGet##mock()
-#define ArduinoFakeMock2(mock) \
-    &ArduinoFake(mock).get()
 
 // Access fakeit::Mock<T>.get()
 // There is no equivalent in fakeit since Mock is a template 
