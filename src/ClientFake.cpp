@@ -1,5 +1,4 @@
 #include "ArduinoFake.h"
-#include "ClientFake.h"
 #include <stdexcept>
 
 int Client::connect(IPAddress ip, uint16_t port)
@@ -59,10 +58,5 @@ uint8_t Client::connected()
 
 Client::operator bool()
 {
-    return 1 == 1;
-}
-
-ClientFakeProxy::operator bool()
-{
-    return 1 == 1;
+    return ArduinoFakeInstance(this)->operator bool();
 }

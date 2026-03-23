@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <unity.h>
 #include "unity_filename_helper.h"
 
@@ -23,11 +24,11 @@ static void test_extends_stream(void)
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(char))).AlwaysReturn();
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(int, int))).AlwaysReturn();
 
-    std::shared_ptr<Stream> stream(ArduinoFakeMock(Stream));
-    std::shared_ptr<Serial_> serial(ArduinoFakeMock(Serial));
+    Stream* pStream(ArduinoFakeInstance0(Stream));
+    Serial_* serial(ArduinoFakeInstance0(Serial));
 
-    stream->print(stream_char_var);
-    stream->print(stream_int_var, DEC);
+    pStream->print(stream_char_var);
+    pStream->print(stream_int_var, DEC);
 
     serial->print(print_char_var);
     serial->print(print_int_var, DEC);

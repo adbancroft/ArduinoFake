@@ -1,5 +1,4 @@
 #include "ArduinoFake.h"
-#include "WireFake.h"
 
 void TwoWire::begin(void) { ArduinoFakeInstance(this)->begin(); }
 
@@ -88,4 +87,4 @@ void TwoWire::onRequest(void (*function)(void)) {
   ArduinoFakeInstance(this)->onRequest(function);
 }
 
-TwoWire Wire = WireFakeProxy(ArduinoFakeInstance0(Wire));
+TwoWire Wire;

@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <unity.h>
 #include "unity_filename_helper.h"
 
@@ -31,7 +32,7 @@ static void test_basics(void)
     When(Method(ArduinoFake(Client), connected)).Return(0, 1);
     When(OverloadedMethod(ArduinoFake(Client), connect, int(const char*, uint16_t))).Return(1);
 
-    std::shared_ptr<Client> client(ArduinoFakeMock(Client));
+    Client * client(ArduinoFakeInstance0(Client));
 
     TEST_ASSERT_EQUAL(0, client->connected());
     TEST_ASSERT_EQUAL(1, client->connect(localhost, 8080));
@@ -56,7 +57,7 @@ static void test_connect(void)
     IPAddress ipAddress1(62, 145, 182, 225);
     IPAddress ipAddress2(221, 155, 131, 19);
 
-    std::shared_ptr<Client> client(ArduinoFakeMock(Client));
+    Client * client(ArduinoFakeInstance0(Client));
 
     TEST_ASSERT_EQUAL(1, client->connect(localhost, 8080));
     TEST_ASSERT_EQUAL(0, client->connect(localhost, 80));
@@ -82,7 +83,7 @@ static void test_write(void)
     When(OverloadedMethod(ArduinoFake(Client), write, size_t(uint8_t))).Return(1, 0);
     When(OverloadedMethod(ArduinoFake(Client), write, size_t(const uint8_t*, size_t))).Return(0, 1);
 
-    std::shared_ptr<Client> client(ArduinoFakeMock(Client));
+    Client * client(ArduinoFakeInstance0(Client));
 
     TEST_ASSERT_EQUAL(1, client->write(val1));
     TEST_ASSERT_EQUAL(0, client->write(val2));
@@ -108,7 +109,7 @@ static void test_read(void)
     When(OverloadedMethod(ArduinoFake(Client), read, int())).Return(10, 20);
     When(OverloadedMethod(ArduinoFake(Client), read, int(uint8_t*, size_t))).Return(30, 400);
 
-    std::shared_ptr<Client> client(ArduinoFakeMock(Client));
+    Client * client(ArduinoFakeInstance0(Client));
 
     TEST_ASSERT_EQUAL(10, client->read());
     TEST_ASSERT_EQUAL(20, client->read());
@@ -129,9 +130,9 @@ static void test_inject_instance(void)
 
     When(OverloadedMethod(ArduinoFake(Client), write, size_t(uint8_t))).Return(11, 22);
 
-    std::shared_ptr<Client> client(ArduinoFakeMock(Client));
+    Client * client(ArduinoFakeInstance0(Client));
 
-    MyService service(client.get());
+    MyService service(client);
 
     TEST_ASSERT_EQUAL(11, service.send(val1));
     TEST_ASSERT_EQUAL(22, service.send(val2));

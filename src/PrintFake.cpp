@@ -1,5 +1,4 @@
 #include "ArduinoFake.h"
-#include "PrintFake.h"
 
 int Print::availableForWrite(void)
 {

@@ -1,5 +1,4 @@
 #include "ArduinoFake.h"
-#include "StreamFake.h"
 
 void Stream::setTimeout(unsigned long timeout)
 {

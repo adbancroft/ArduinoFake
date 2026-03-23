@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <unity.h>
 #include "arduino/SPI.h"
 #include "unity_filename_helper.h"

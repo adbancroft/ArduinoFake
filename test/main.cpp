@@ -1,5 +1,6 @@
 // clang-format off
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <cstdlib>
 #include <unity.h>
 
@@ -13,8 +14,7 @@
 #include "test_eeprom.h"
 #include "test_client.h"
 #include "test_arduino_string.h"
-#include "test_ProxiedArduinoFake_t.h"
-#include "test_OverrideableProxiedArduinoFake_t.h"
+#include "test_OverrideableArduinoFake_t.h"
 
 #define RUN_TEST_GROUP(TEST) \
     if (!std::getenv("TEST_GROUP") || (strcmp(#TEST, std::getenv("TEST_GROUP")) == 0)) { \
@@ -42,8 +42,7 @@ int main(int argc, char **argv)
     RUN_TEST_GROUP(SpiTest);
     RUN_TEST_GROUP(EEPROMTest);
     RUN_TEST_GROUP(ClientTest);
-    RUN_TEST_GROUP(ProxiedArduinoFakeTTest);
-    RUN_TEST_GROUP(OverrideableProxiedArduinoFakeTTest);
+    RUN_TEST_GROUP(OverrideableArduinoFakeTTest);
 
     return UNITY_END();
 }

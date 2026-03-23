@@ -87,9 +87,9 @@ private:
 	int peek_buffer;
 public:
 	Serial_() { peek_buffer = -1; };
-	void begin(unsigned long);
-	void begin(unsigned long, uint8_t);
-	void end(void);
+	virtual void begin(unsigned long);
+	virtual void begin(unsigned long, uint8_t);
+	virtual void end(void);
 
 	virtual int available(void);
 	virtual int peek(void);
@@ -119,17 +119,17 @@ public:
 	// first request is lost.
 	// Note that the value returned is a long, so it can return
 	// 0-0xffff as well as -1.
-	int32_t readBreak();
+	virtual int32_t readBreak();
 
 	// These return the settings specified by the USB host for the
 	// serial port. These aren't really used, but are offered here
 	// in case a sketch wants to act on these settings.
-	uint32_t baud();
-	uint8_t stopbits();
-	uint8_t paritytype();
-	uint8_t numbits();
-	bool dtr();
-	bool rts();
+	virtual uint32_t baud();
+	virtual uint8_t stopbits();
+	virtual uint8_t paritytype();
+	virtual uint8_t numbits();
+	virtual bool dtr();
+	virtual bool rts();
 	enum {
 		ONE_STOP_BIT = 0,
 		ONE_AND_HALF_STOP_BIT = 1,

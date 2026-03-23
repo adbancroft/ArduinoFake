@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ProxiedArduinoFakeTTest
+namespace OverrideableArduinoFakeTTest
 {
     void run_tests(void);
 }

@@ -9,18 +9,29 @@
 #include <cstring>
 #include <cstdint>
 #include <stdexcept>
+#if defined(abs)
+#undef abs
+#endif
 #include <single_header/standalone/fakeit.hpp>
 
-#include "arduino/Arduino.h"
+#include <Arduino.h>
+#include <Stream.h>
+#include <USBAPI.h>
+#include <Wire.h>
+#include <Client.h>
+#include <Print.h>
+#include <SPI.h>
+#include <EEPROM.h>
 
-#include "Function.h"
-#include "Stream.h"
-#include "Serial.h"
-#include "Wire.h"
-#include "Client.h"
-#include "Print.h"
-#include "SPI.h"
-#include "EEPROM.h"
+#include "FunctionFake.h"
+
+using PrintFake = Print;
+using ClientFake = Client;
+using StreamFake = Stream;
+using SerialFake = Serial_;
+using WireFake = TwoWire;
+using SPIFake = SPIClass;
+using EEPROMFake = EEPROMClass;
 
 #define CONCAT2(x,y) x##y
 #define CONCAT(x,y) CONCAT2(x,y)
@@ -44,9 +55,6 @@
 
 #define ArduinoFakeInstance(clazz) \
     getArduinoFakeContext()->getFake(clazz)
-
-#define ArduinoFakeMock(mock) \
-    std::shared_ptr<mock##FakeProxy>(new mock##FakeProxy(ArduinoFakeInstance0(mock)))
 
 #define _ArduinoFakeGetMock(mock) \
     getArduinoFakeContext()->_##mock
@@ -73,17 +81,14 @@ struct IFake
     virtual void* toFake(void) = 0;
 };
 
-template <class FakeT, class ProxyT, typename BaseT = fakeit::Mock<FakeT>>
-struct ProxiedArduinoFake_t : public BaseT, IFake
-{  
+template <class FakeT, typename BaseT = fakeit::Mock<FakeT>>
+struct ArduinoFake_t : public BaseT, IFake
+{
     // Proxy to fake
     template <class ArduinoT>
     FakeT* getFake(ArduinoT *instance)
     {
-        if (dynamic_cast<ProxyT*>(instance)) {
-            return dynamic_cast<ProxyT*>(instance)->getFake();
-        }
-        throw std::runtime_error("Unknown instance");
+        return static_cast<FakeT*>(toFake());
     }
 
     // Get the 'real' fake - the one that is actually mocked.
@@ -123,12 +128,12 @@ private:
     std::unordered_map<void*, IFake*> _mapping;
 };
 
-template <class FakeT, class ProxyT, typename BaseT = ProxiedArduinoFake_t<FakeT, ProxyT>>
-struct OverrideableProxiedArduinoFake_t : public BaseT
+template <class FakeT, typename BaseT = ArduinoFake_t<FakeT>>
+struct OverrideableArduinoFake_t : public BaseT
 {
     FakeOverride_t &_overrides;
 
-    OverrideableProxiedArduinoFake_t(FakeOverride_t &overrides)
+    OverrideableArduinoFake_t(FakeOverride_t &overrides)
         : BaseT()
         , _overrides(overrides)
     {
@@ -150,13 +155,13 @@ class ArduinoFakeContext
 public:
     FakeOverride_t _fakeOverrides;
     fakeit::Mock<FunctionFake> _Function;
-    OverrideableProxiedArduinoFake_t<SerialFake, SerialFakeProxy> _Serial;
-    OverrideableProxiedArduinoFake_t<WireFake, WireFakeProxy> _Wire;
-    OverrideableProxiedArduinoFake_t<StreamFake, StreamFakeProxy> _Stream;
-    OverrideableProxiedArduinoFake_t<ClientFake, ClientFakeProxy> _Client;
-    OverrideableProxiedArduinoFake_t<PrintFake, PrintFakeProxy> _Print;
-    OverrideableProxiedArduinoFake_t<SPIFake, SPIFakeProxy> _SPI;
-    OverrideableProxiedArduinoFake_t<EEPROMFake, EEPROMFakeProxy> _EEPROM;
+    OverrideableArduinoFake_t<SerialFake> _Serial;
+    OverrideableArduinoFake_t<WireFake> _Wire;
+    OverrideableArduinoFake_t<StreamFake> _Stream;
+    OverrideableArduinoFake_t<ClientFake> _Client;
+    OverrideableArduinoFake_t<PrintFake> _Print;
+    OverrideableArduinoFake_t<SPIFake> _SPI;
+    OverrideableArduinoFake_t<EEPROMFake> _EEPROM;
     
 #define _ArduinoFakeInstanceGetter1(mock) \
     mock##Fake* mock() \

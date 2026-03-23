@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <unity.h>
 #include "unity_filename_helper.h"
 
@@ -53,21 +54,21 @@ static void test_reset_print(void)
         std::cout << str;
         return strlen(str);
     });
-    assert_test_reset(method, []() { (ArduinoFakeMock(Print))->print("abc"); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(Print))->print("abc"); });
 }
 
 static void test_reset_serial(void)
 {
     auto method = Method(ArduinoFake(Serial), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Serial))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(Serial))->end(); });
 }
 
 static void test_reset_wire(void)
 {
     auto method = Method(ArduinoFake(Wire), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Wire))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(Wire))->end(); });
 }
 
 static void test_reset_stream(void)
@@ -76,7 +77,7 @@ static void test_reset_stream(void)
     When(method).AlwaysReturn(false);
     assert_test_reset(method, []() { 
         char toFind[] = "abc";
-        (ArduinoFakeMock(Stream))->find(toFind); 
+        (ArduinoFakeInstance0(Stream))->find(toFind); 
     });
 }
 
@@ -84,21 +85,21 @@ static void test_reset_client(void)
 {
     auto method = Method(ArduinoFake(Client), available);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(Client))->available(); });
+    assert_test_reset(method, []() { ArduinoFakeInstance0(Client)->available(); });
 }
 
 static void test_reset_spi(void)
 {
     auto method = Method(ArduinoFake(SPI), end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeMock(SPI))->end(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(SPI))->end(); });
 }
 
 static void test_reset_eeprom(void)
 {
     auto method = Method(ArduinoFake(EEPROM), length);
     When(method).AlwaysReturn(0xffff);
-    assert_test_reset(method, []() { (ArduinoFakeMock(EEPROM))->length(); });
+    assert_test_reset(method, []() { (ArduinoFakeInstance0(EEPROM))->length(); });
 }
 
 static void test_reset(void)
@@ -202,8 +203,8 @@ static void test_unknown_instance_exception(void)
 
 static void test_getter_overload_with_proxy(void)
 {
-    std::shared_ptr<Serial_> serial(ArduinoFakeMock(Serial));
-    PrintFake* serialPrintFake = ArduinoFakeInstance(serial.get());
+    Serial_* serial(ArduinoFakeInstance0(Serial));
+    PrintFake* serialPrintFake = ArduinoFakeInstance(serial);
 
     TEST_ASSERT_EQUAL(getArduinoFakeContext()->Serial(), serialPrintFake);
     PrintFake* printFake = ArduinoFakeInstance0(Print);

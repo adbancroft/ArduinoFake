@@ -1,5 +1,4 @@
 #include "ArduinoFake.h"
-#include "SPIFake.h"
 
 void SPIClass::begin() { ArduinoFakeInstance(this)->begin(); };
 
@@ -25,4 +24,4 @@ void SPIClass::transfer(void *buf, size_t count) {
   return ArduinoFakeInstance(this)->transfer(buf, count);
 };
 
-SPIClass SPI = SPIFakeProxy(ArduinoFakeInstance0(SPI));
+SPIClass SPI;

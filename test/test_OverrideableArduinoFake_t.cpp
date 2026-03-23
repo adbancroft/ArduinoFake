@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoFake.h>
 #include <unity.h>
 #include "unity_filename_helper.h"
 
@@ -14,30 +15,22 @@ struct IArduino
     virtual void bar(void) {}
 };
 
-struct IDummyProxy : public IArduino
-{
-    IDummy *_dummy;
-    IDummy* getFake(void) { return _dummy; }
-
-    virtual void bar(void) override {}
-};
-
 static void test_getFake(void)
 {
     FakeOverride_t overrides;
-    OverrideableProxiedArduinoFake_t<IDummy, IDummyProxy> subject(overrides);
+    OverrideableArduinoFake_t<IDummy> subject(overrides);
 
-    // No override, should get the proxy fake
-    IDummyProxy proxy;
-    TEST_ASSERT_EQUAL_PTR(proxy.getFake(), subject.getFake<IArduino>(&proxy));
+    // No override, should get the real fake
+    IArduino proxy;
+    TEST_ASSERT_EQUAL_PTR(&subject.get(), subject.getFake<IArduino>(&proxy));
 
     // Should return the alternate, since it's now overriden
-    ProxiedArduinoFake_t<IArduino, IDummy> alternateFake;
+    ArduinoFake_t<IArduino> alternateFake;
     overrides.setOverride(&proxy, &alternateFake);
     TEST_ASSERT_EQUAL_PTR(&alternateFake.get(), subject.getFake<IArduino>(&proxy));
 }
 
-namespace OverrideableProxiedArduinoFakeTTest
+namespace OverrideableArduinoFakeTTest
 {
     void run_tests(void)
     {
