@@ -3,14 +3,14 @@
 // clang-format on
 
 uint8_t EEPROMClass::read(int idx) {
-  return ArduinoFakeInstance(this)->read(idx);
+  return ArduinoFakeInstance(EEPROM, this)->read(idx);
 };
 void EEPROMClass::write(int idx, uint8_t val) {
-  ArduinoFakeInstance(this)->write(idx, val);
+  ArduinoFakeInstance(EEPROM, this)->write(idx, val);
 };
 void EEPROMClass::update(int idx, uint8_t val) {
-  ArduinoFakeInstance(this)->update(idx, val);
+  ArduinoFakeInstance(EEPROM, this)->update(idx, val);
 };
-uint16_t EEPROMClass::length() { return ArduinoFakeInstance(this)->length(); }
+uint16_t EEPROMClass::length() { return ArduinoFakeInstance(EEPROM, this)->length(); }
 
 EEPROMClass EEPROM;

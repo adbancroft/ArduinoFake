@@ -28,14 +28,11 @@
 #define ArduinoFakeReset() \
     getArduinoFakeContext()->Reset()
 
- #define ArduinoFakeInstance0(mock) \
-    getArduinoFakeContext()->_##mock.getFake()
-
-#define ArduinoFakeInstance(clazz) \
-    getArduinoFakeContext()->getFake(clazz)
-
 #define _ArduinoFakeGetMock(mock) \
     getArduinoFakeContext()->_##mock
+
+#define ArduinoFakeInstance(mock, ...) \
+    _ArduinoFakeGetMock(mock).getFake(__VA_ARGS__)
 
 #define _ArduinoFakeGetFunction() _ArduinoFakeGetMock(Function)
 #define _ArduinoFakeGetSerial() _ArduinoFakeGetMock(Serial)
@@ -135,19 +132,11 @@ public:
     ArduinoFake_t<FunctionFake> _Function;
     OverrideableArduinoFake_t<Serial_> _Serial;
     OverrideableArduinoFake_t<TwoWire> _Wire;
-    OverrideableArduinoFake_t<::Stream> _Stream;
-    OverrideableArduinoFake_t<::Client> _Client;
-    OverrideableArduinoFake_t<::Print> _Print;
+    OverrideableArduinoFake_t<Stream> _Stream;
+    OverrideableArduinoFake_t<Client> _Client;
+    OverrideableArduinoFake_t<Print> _Print;
     OverrideableArduinoFake_t<SPIClass> _SPI;
     OverrideableArduinoFake_t<EEPROMClass> _EEPROM;
-    
-    ::Print* getFake(::Print *instance) { return _Print.getFake(instance); }
-    ::Stream* getFake(::Stream *instance) { return _Stream.getFake(instance); }
-    ::Serial_* getFake(::Serial_ *instance) { return _Serial.getFake(instance); }
-    ::TwoWire* getFake(::TwoWire *instance) { return _Wire.getFake(instance); }
-    ::Client* getFake(::Client* instance) { return _Client.getFake(instance); }
-    ::SPIClass* getFake(::SPIClass* instance) { return _SPI.getFake(instance); }
-    ::EEPROMClass* getFake(::EEPROMClass* instance) { return _EEPROM.getFake(instance); }
 
     ArduinoFakeContext()
         : _fakeOverrides()

@@ -9,7 +9,7 @@ static void test_availableForWrite(void)
 {
     When(Method(ArduinoFake(Print), availableForWrite)).Return(-100);
 
-    Print* print(ArduinoFakeInstance0(Print));
+    Print* print(ArduinoFakeInstance(Print));
 
     int result = print->availableForWrite();
     TEST_ASSERT_EQUAL(-100, result);
@@ -39,7 +39,7 @@ static void test_print_variables(void)
     When(OverloadedMethod(ArduinoFake(Print), print, size_t(unsigned int, int))).AlwaysReturn();
     When(OverloadedMethod(ArduinoFake(Print), print, size_t(unsigned long, int))).AlwaysReturn();
 
-    Print* print(ArduinoFakeInstance0(Print));
+    Print* print(ArduinoFakeInstance(Print));
 
     print->print(char_var);
     print->print(char_array_var);
@@ -85,7 +85,7 @@ static void test_println_variables(void)
     When(OverloadedMethod(ArduinoFake(Print), println, size_t(unsigned int, int))).AlwaysReturn();
     When(OverloadedMethod(ArduinoFake(Print), println, size_t(unsigned long, int))).AlwaysReturn();
 
-    Print* print(ArduinoFakeInstance0(Print));
+    Print* print(ArduinoFakeInstance(Print));
 
     print->println();
     print->println(char_var);

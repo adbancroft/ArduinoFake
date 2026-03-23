@@ -8,8 +8,8 @@ using namespace fakeit;
 static void test_extends_stream(void)
 {
     TEST_ASSERT_NOT_EQUAL(
-        ArduinoFakeInstance0(Stream),
-        ArduinoFakeInstance0(Serial)
+        ArduinoFakeInstance(Stream),
+        ArduinoFakeInstance(Serial)
     );
 
     char print_char_var = 'A';
@@ -24,8 +24,8 @@ static void test_extends_stream(void)
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(char))).AlwaysReturn();
     When(OverloadedMethod(ArduinoFake(Serial), print, size_t(int, int))).AlwaysReturn();
 
-    Stream* pStream(ArduinoFakeInstance0(Stream));
-    Serial_* serial(ArduinoFakeInstance0(Serial));
+    Stream* pStream(ArduinoFakeInstance(Stream));
+    Serial_* serial(ArduinoFakeInstance(Serial));
 
     pStream->print(stream_char_var);
     pStream->print(stream_int_var, DEC);
