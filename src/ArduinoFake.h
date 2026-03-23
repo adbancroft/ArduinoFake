@@ -33,20 +33,6 @@ using WireFake = TwoWire;
 using SPIFake = SPIClass;
 using EEPROMFake = EEPROMClass;
 
-#define CONCAT2(x,y) x##y
-#define CONCAT(x,y) CONCAT2(x,y)
-
-// These map a Arduino class name (E.g. "SPIClass") to
-// the corresponding fake member name (E.g. "SPI")
-#define _ClazzToFakePrint() Print
-#define _ClazzToFakeClient() Client
-#define _ClazzToFakeStream() Stream
-#define _ClazzToFakeSerial_() Serial
-#define _ClazzToFakeTwoWire() Wire
-#define _ClazzToFakeSPIClass() SPI
-#define _ClazzToFakeEEPROMClass() EEPROM
-#define _ClazzToFake(clazz) _ClazzToFake##clazz()
-
 #define ArduinoFakeReset() \
     getArduinoFakeContext()->Reset()
 
@@ -172,21 +158,13 @@ public:
     SPIClass* SPI(void) { return (SPIClass*)_SPI.toFake(); }
     EEPROMClass* EEPROM(void) { return (EEPROMClass*)_EEPROM.toFake(); }
 
-#define _ArduinoFakeInstanceGetter2(clazz) \
-    CONCAT(_ClazzToFake(clazz), Fake)* getFake(class clazz* instance) \
-    { \
-        return this->CONCAT(_, _ClazzToFake(clazz)).getFake(instance); \
-    }
-
-    _ArduinoFakeInstanceGetter2(Print)
-    _ArduinoFakeInstanceGetter2(Client)
-    _ArduinoFakeInstanceGetter2(Stream)
-    _ArduinoFakeInstanceGetter2(Serial_)
-    _ArduinoFakeInstanceGetter2(TwoWire)
-    _ArduinoFakeInstanceGetter2(SPIClass)
-    _ArduinoFakeInstanceGetter2(EEPROMClass)
-
-#undef _ArduinoFakeInstanceGetter2
+    ::Print* getFake(::Print *instance) { return _Print.getFake(instance); }
+    ::Stream* getFake(::Stream *instance) { return _Stream.getFake(instance); }
+    ::Serial_* getFake(::Serial_ *instance) { return _Serial.getFake(instance); }
+    ::TwoWire* getFake(::TwoWire *instance) { return _Wire.getFake(instance); }
+    ::Client* getFake(::Client* instance) { return _Client.getFake(instance); }
+    ::SPIClass* getFake(::SPIClass* instance) { return _SPI.getFake(instance); }
+    ::EEPROMClass* getFake(::EEPROMClass* instance) { return _EEPROM.getFake(instance); }
 
     ArduinoFakeContext()
         : _fakeOverrides()
