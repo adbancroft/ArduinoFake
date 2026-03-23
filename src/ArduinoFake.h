@@ -5,10 +5,6 @@
     #error Add "-D USBCON" to the compiler command line
 #endif
 
-#include <cstring>
-#include <cstdint>
-#include <stdexcept>
-#include <Arduino.h>
 #include <Stream.h>
 #include <USBAPI.h>
 #include <Wire.h>
@@ -24,7 +20,7 @@
 // Implementation details
 
 #define _ArduinoFakeGetMock(mock) \
-    getArduinoFakeContext()->_##mock
+    getArduinoFakeContext()._##mock
 
 #define _ArduinoFakeGetFunction() _ArduinoFakeGetMock(Function)
 #define _ArduinoFakeGetSerial() _ArduinoFakeGetMock(Serial)
@@ -39,7 +35,7 @@
 /// @endcond
 
 #define ArduinoFakeReset() \
-    getArduinoFakeContext()->Reset()
+    getArduinoFakeContext().Reset()
 
 #define ArduinoFakeInstance(mock, ...) \
     _ArduinoFakeGetMock(mock).getFake(__VA_ARGS__)
@@ -93,6 +89,6 @@ public:
 
 };
 
-ArduinoFakeContext* getArduinoFakeContext();
+ArduinoFakeContext& getArduinoFakeContext();
 
 // clang-format on

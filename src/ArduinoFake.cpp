@@ -1,7 +1,7 @@
 #include "ArduinoFake.h"
 
-ArduinoFakeContext* getArduinoFakeContext()
+ArduinoFakeContext& getArduinoFakeContext()
 {
     static ArduinoFakeContext arduinoFakeContext;
-    return &arduinoFakeContext;
+    return arduinoFakeContext;
 }

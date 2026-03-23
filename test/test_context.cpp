@@ -7,8 +7,8 @@ using namespace fakeit;
 
 static void test_single_instance(void)
 {
-    ArduinoFakeContext* context1 = getArduinoFakeContext();
-    ArduinoFakeContext* context2 = getArduinoFakeContext();
+    ArduinoFakeContext* context1 = &getArduinoFakeContext();
+    ArduinoFakeContext* context2 = &getArduinoFakeContext();
 
     TEST_ASSERT_NOT_NULL(context1);
     TEST_ASSERT_NOT_NULL(context2);
