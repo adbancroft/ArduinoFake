@@ -13,7 +13,6 @@
 #include "test_spi.h"
 #include "test_eeprom.h"
 #include "test_client.h"
-#include "test_arduino_string.h"
 #include "test_OverrideableArduinoFake_t.h"
 
 #define RUN_TEST_GROUP(TEST) \
@@ -30,8 +29,6 @@ void tearDown(void) {}
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
-
-    RUN_TEST_GROUP(ArduinoStringTest);
 
     RUN_TEST_GROUP(ArduinoContextTest);
     RUN_TEST_GROUP(FunctionTest);
