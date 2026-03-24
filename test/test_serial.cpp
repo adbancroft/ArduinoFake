@@ -18,11 +18,11 @@ static void test_extends_stream(void)
     int print_int_var = 123;
     int stream_int_var = 321;
 
-    When(OverloadedMethod(ArduinoFake(Stream), print, size_t(char))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake(Stream), print, size_t(int, int))).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(char))).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(int, int))).AlwaysReturn();
 
-    When(OverloadedMethod(ArduinoFake(Serial), print, size_t(char))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake(Serial), print, size_t(int, int))).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(char))).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(int, int))).AlwaysReturn();
 
     Stream* pStream(getArduinoFakeContext()._Stream.getFake());
     Serial_* serial(getArduinoFakeContext()._Serial.getFake());
@@ -33,32 +33,32 @@ static void test_extends_stream(void)
     serial->print(print_char_var);
     serial->print(print_int_var, DEC);
 
-    Verify(OverloadedMethod(ArduinoFake(Stream), print, size_t(char)).Using(stream_char_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake(Stream), print, size_t(int, int)).Using(stream_int_var, DEC)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(char)).Using(stream_char_var)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(int, int)).Using(stream_int_var, DEC)).Once();
 
-    Verify(OverloadedMethod(ArduinoFake(Serial), print, size_t(char)).Using(print_char_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake(Serial), print, size_t(int, int)).Using(print_int_var, DEC)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(char)).Using(print_char_var)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(int, int)).Using(print_int_var, DEC)).Once();
 }
 
 static void test_global_serial(void)
 {
-    When(Method(ArduinoFake(Serial), available)).Return(1);
-    When(OverloadedMethod(ArduinoFake(Serial), print, size_t(char))).Return(1);
+    When(Method(getArduinoFakeContext()._Serial, available)).Return(1);
+    When(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(char))).Return(1);
 
     TEST_ASSERT_EQUAL(1, Serial.available());
     TEST_ASSERT_EQUAL(1, Serial.print('A'));
 
-    Verify(Method(ArduinoFake(Serial), available)).Once();
-    Verify(OverloadedMethod(ArduinoFake(Serial), print, size_t(char)).Using('A')).Once();
+    Verify(Method(getArduinoFakeContext()._Serial, available)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Serial, print, size_t(char)).Using('A')).Once();
 }
 
 static void test_basics(void)
 {
-    When(Method(ArduinoFake(Serial), end)).AlwaysReturn();
-    When(Method(ArduinoFake(Serial), flush)).AlwaysReturn();
-    When(Method(ArduinoFake(Serial), available)).Return(0, 1);
-    When(OverloadedMethod(ArduinoFake(Serial), write, size_t(uint8_t))).Return(1);
-    When(OverloadedMethod(ArduinoFake(Serial), begin, void(unsigned long))).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Serial, end)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Serial, flush)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Serial, available)).Return(0, 1);
+    When(OverloadedMethod(getArduinoFakeContext()._Serial, write, size_t(uint8_t))).Return(1);
+    When(OverloadedMethod(getArduinoFakeContext()._Serial, begin, void(unsigned long))).AlwaysReturn();
 
     Serial.begin(9600);
 
@@ -69,13 +69,13 @@ static void test_basics(void)
     Serial.flush();
     Serial.end();
 
-    Verify(OverloadedMethod(ArduinoFake(Serial), begin, void(unsigned long)).Using(9600)).Once();
-    Verify(Method(ArduinoFake(Serial), available)).Exactly(2_Times);
+    Verify(OverloadedMethod(getArduinoFakeContext()._Serial, begin, void(unsigned long)).Using(9600)).Once();
+    Verify(Method(getArduinoFakeContext()._Serial, available)).Exactly(2_Times);
 
-    Verify(OverloadedMethod(ArduinoFake(Serial), write, size_t(uint8_t)).Using(5)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Serial, write, size_t(uint8_t)).Using(5)).Once();
 
-    Verify(Method(ArduinoFake(Serial), flush)).Once();
-    Verify(Method(ArduinoFake(Serial), end)).Once();
+    Verify(Method(getArduinoFakeContext()._Serial, flush)).Once();
+    Verify(Method(getArduinoFakeContext()._Serial, end)).Once();
 }
 
 namespace SerialTest

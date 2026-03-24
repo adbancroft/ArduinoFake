@@ -42,14 +42,14 @@ void assert_test_reset(FakeMethod fakeMethod, std::function<void(void)> realMeth
 
 static void test_reset_function(void)
 {
-    auto method = Method(ArduinoFake(Function), millis);
+    auto method = Method(getArduinoFakeContext()._Function, millis);
     When(method).AlwaysReturn(101L);
     assert_test_reset(method, []() { (void)millis(); });
 }
 
 static void test_reset_print(void)
 {
-    auto method = OverloadedMethod(ArduinoFake(Print), print, size_t(const char[]));
+    auto method = OverloadedMethod(getArduinoFakeContext()._Print, print, size_t(const char[]));
     When(method).AlwaysDo([](const char *str) {
         std::cout << str;
         return strlen(str);
@@ -59,21 +59,21 @@ static void test_reset_print(void)
 
 static void test_reset_serial(void)
 {
-    auto method = Method(ArduinoFake(Serial), end);
+    auto method = Method(getArduinoFakeContext()._Serial, end);
     When(method).AlwaysReturn();
     assert_test_reset(method, []() { (getArduinoFakeContext()._Serial.getFake())->end(); });
 }
 
 static void test_reset_wire(void)
 {
-    auto method = Method(ArduinoFake(Wire), end);
+    auto method = Method(getArduinoFakeContext()._Wire, end);
     When(method).AlwaysReturn();
     assert_test_reset(method, []() { (getArduinoFakeContext()._Wire.getFake())->end(); });
 }
 
 static void test_reset_stream(void)
 {
-    auto method = OverloadedMethod(ArduinoFake(Stream), find, bool(const char *));
+    auto method = OverloadedMethod(getArduinoFakeContext()._Stream, find, bool(const char *));
     When(method).AlwaysReturn(false);
     assert_test_reset(method, []() { 
         char toFind[] = "abc";
@@ -83,21 +83,21 @@ static void test_reset_stream(void)
 
 static void test_reset_client(void)
 {
-    auto method = Method(ArduinoFake(Client), available);
+    auto method = Method(getArduinoFakeContext()._Client, available);
     When(method).AlwaysReturn();
     assert_test_reset(method, []() { (getArduinoFakeContext()._Client.getFake())->available(); });
 }
 
 static void test_reset_spi(void)
 {
-    auto method = Method(ArduinoFake(SPI), end);
+    auto method = Method(getArduinoFakeContext()._SPI, end);
     When(method).AlwaysReturn();
     assert_test_reset(method, []() { (getArduinoFakeContext()._SPI.getFake())->end(); });
 }
 
 static void test_reset_eeprom(void)
 {
-    auto method = Method(ArduinoFake(EEPROM), length);
+    auto method = Method(getArduinoFakeContext()._EEPROM, length);
     When(method).AlwaysReturn(0xffff);
     assert_test_reset(method, []() { (getArduinoFakeContext()._EEPROM.getFake())->length(); });
 }
@@ -120,8 +120,8 @@ static void test_reset(void)
 
 static void test_function_mock(void)
 {
-    Mock<ArduinoFake::details::FunctionFake>* m1 = &ArduinoFake(Function);
-    Mock<ArduinoFake::details::FunctionFake>* m2 = &ArduinoFake(Function);
+    Mock<ArduinoFake::details::FunctionFake>* m1 = &getArduinoFakeContext()._Function;
+    Mock<ArduinoFake::details::FunctionFake>* m2 = &getArduinoFakeContext()._Function;
     Mock<ArduinoFake::details::FunctionFake>* m3 = &getArduinoFakeContext()._Function;
 
     TEST_ASSERT_NOT_NULL(m1);
@@ -141,8 +141,8 @@ static void test_function_mock(void)
 
 static void test_print_mock(void)
 {
-    Mock<Print>* m1 = &ArduinoFake(Print);
-    Mock<Print>* m2 = &ArduinoFake(Print);
+    Mock<Print>* m1 = &getArduinoFakeContext()._Print;
+    Mock<Print>* m2 = &getArduinoFakeContext()._Print;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
@@ -158,8 +158,8 @@ static void test_print_mock(void)
 
 static void test_stream_mock(void)
 {
-    Mock<Stream>* m1 = &ArduinoFake(Stream);
-    Mock<Stream>* m2 = &ArduinoFake(Stream);
+    Mock<Stream>* m1 = &getArduinoFakeContext()._Stream;
+    Mock<Stream>* m2 = &getArduinoFakeContext()._Stream;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
@@ -175,8 +175,8 @@ static void test_stream_mock(void)
 
 static void test_serial_mock(void)
 {
-    Mock<Serial_>* m1 = &ArduinoFake(Serial);
-    Mock<Serial_>* m2 = &ArduinoFake(Serial);
+    Mock<Serial_>* m1 = &getArduinoFakeContext()._Serial;
+    Mock<Serial_>* m2 = &getArduinoFakeContext()._Serial;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);

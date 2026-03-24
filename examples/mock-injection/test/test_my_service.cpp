@@ -7,12 +7,12 @@ using namespace fakeit;
 
 void test_connect(void)
 {
-    When(Method(ArduinoFake(Client), stop)).AlwaysReturn();
-    When(Method(ArduinoFake(Client), available)).Return(1, 1, 1, 0);
-    When(OverloadedMethod(ArduinoFake(Client), read, int())).Return(2, 0, 0);
-    When(OverloadedMethod(ArduinoFake(Client), println, size_t())).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake(Client), println, size_t(const char *))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake(Client), connect, int(const char*, uint16_t))).Return(1);
+    When(Method(getArduinoFakeContext()._Client, stop)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Client, available)).Return(1, 1, 1, 0);
+    When(OverloadedMethod(getArduinoFakeContext()._Client, read, int())).Return(2, 0, 0);
+    When(OverloadedMethod(getArduinoFakeContext()._Client, println, size_t())).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Client, println, size_t(const char *))).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Client, connect, int(const char*, uint16_t))).Return(1);
 
     Client * clientMock(getArduinoFakeContext()._Client.getFake());
 
@@ -22,13 +22,13 @@ void test_connect(void)
     TEST_ASSERT_EQUAL(3, response.length());
     TEST_ASSERT_TRUE(response.equals("200"));
 
-    Verify(Method(ArduinoFake(Client), stop)).Once();
-    Verify(Method(ArduinoFake(Client), available)).Exactly(4_Times);
-    Verify(OverloadedMethod(ArduinoFake(Client), read, int())).Exactly(3_Times);
+    Verify(Method(getArduinoFakeContext()._Client, stop)).Once();
+    Verify(Method(getArduinoFakeContext()._Client, available)).Exactly(4_Times);
+    Verify(OverloadedMethod(getArduinoFakeContext()._Client, read, int())).Exactly(3_Times);
 
-    Verify(OverloadedMethod(ArduinoFake(Client), println, size_t())).Once();
-    Verify(OverloadedMethod(ArduinoFake(Client), println, size_t(const char [])).Using((const char *)"STATUS")).Never();
-    Verify(OverloadedMethod(ArduinoFake(Client), connect, int(const char[], uint16_t)).Using((const char *)"myserver.com", 80)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Client, println, size_t())).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Client, println, size_t(const char [])).Using((const char *)"STATUS")).Never();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Client, connect, int(const char[], uint16_t)).Using((const char *)"myserver.com", 80)).Once();
 }
 
 int main(int argc, char **argv)

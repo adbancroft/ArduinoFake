@@ -7,13 +7,13 @@
 using namespace fakeit;
 
 static void test_basics(void) {
-  When(OverloadedMethod(ArduinoFake(EEPROM), read, uint8_t(int)))
+  When(OverloadedMethod(getArduinoFakeContext()._EEPROM, read, uint8_t(int)))
       .AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(EEPROM), write, void(int, uint8_t)))
+  When(OverloadedMethod(getArduinoFakeContext()._EEPROM, write, void(int, uint8_t)))
       .AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(EEPROM), update, void(int, uint8_t)))
+  When(OverloadedMethod(getArduinoFakeContext()._EEPROM, update, void(int, uint8_t)))
       .AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(EEPROM), length, uint16_t(void)))
+  When(OverloadedMethod(getArduinoFakeContext()._EEPROM, length, uint16_t(void)))
       .AlwaysReturn();
 
   EEPROM.read(1);
@@ -21,21 +21,21 @@ static void test_basics(void) {
   EEPROM.update(1, 2);
   EEPROM.length();
 
-  Verify(OverloadedMethod(ArduinoFake(EEPROM), read, uint8_t(int))).Once();
-  Verify(OverloadedMethod(ArduinoFake(EEPROM), write, void(int, uint8_t)))
+  Verify(OverloadedMethod(getArduinoFakeContext()._EEPROM, read, uint8_t(int))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._EEPROM, write, void(int, uint8_t)))
       .Once();
-  Verify(OverloadedMethod(ArduinoFake(EEPROM), update, void(int, uint8_t)))
+  Verify(OverloadedMethod(getArduinoFakeContext()._EEPROM, update, void(int, uint8_t)))
       .Once();
-  Verify(OverloadedMethod(ArduinoFake(EEPROM), length, uint16_t(void))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._EEPROM, length, uint16_t(void))).Once();
 }
 
 static void test_get(void) {
-    When(Method(ArduinoFake(EEPROM), read)).AlwaysReturn((uint8_t)INT8_MAX);
+    When(Method(getArduinoFakeContext()._EEPROM, read)).AlwaysReturn((uint8_t)INT8_MAX);
 
     uint16_t arr[] = { UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX };
     EEPROM.get(0, arr);
 
-    Verify(Method(ArduinoFake(EEPROM), read)).Exactly(sizeof(arr));
+    Verify(Method(getArduinoFakeContext()._EEPROM, read)).Exactly(sizeof(arr));
 
     constexpr uint16_t expected = INT8_MAX | (INT8_MAX << 8U);
     TEST_ASSERT_EQUAL(expected, arr[0]);
@@ -46,7 +46,7 @@ static void test_get(void) {
 }
 
 static void test_put(void) {
-    When(Method(ArduinoFake(EEPROM), update)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._EEPROM, update)).AlwaysReturn();
 
     const int16_t arr[] = { INT16_MAX, INT16_MIN };
     constexpr int idx = 101;
@@ -54,7 +54,7 @@ static void test_put(void) {
 
     const uint8_t *pSource = (const uint8_t *)arr;
     for (int i = 0; i < sizeof(arr); ++i) {
-        Verify(Method(ArduinoFake(EEPROM), update).Using(idx + i, pSource[i])).Once();
+        Verify(Method(getArduinoFakeContext()._EEPROM, update).Using(idx + i, pSource[i])).Once();
     }
 }
 

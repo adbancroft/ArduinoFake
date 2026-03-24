@@ -16,26 +16,6 @@
 #include "ArduinoFakeOverride.h"
 #include "FunctionFake.h"
 
-/// @cond
-// Implementation details
-
-#define _ArduinoFakeGetMock(mock) \
-    getArduinoFakeContext()._##mock
-
-#define _ArduinoFakeGetFunction() _ArduinoFakeGetMock(Function)
-#define _ArduinoFakeGetSerial() _ArduinoFakeGetMock(Serial)
-#define _ArduinoFakeGetWire() _ArduinoFakeGetMock(Wire)
-#define _ArduinoFakeGetSPI() _ArduinoFakeGetMock(SPI)
-#define _ArduinoFakeGetEEPROM() _ArduinoFakeGetMock(EEPROM)
-#define _ArduinoFakeGetStream() _ArduinoFakeGetMock(Stream)
-#define _ArduinoFakeGetClient() _ArduinoFakeGetMock(Client)
-#define _ArduinoFakeGetPrint() _ArduinoFakeGetMock(Print)
-#define _ArduinoFakeGet() _ArduinoFakeGetMock(Function)
-
-/// @endcond
-
-#define ArduinoFake(mock) _ArduinoFakeGet##mock()
-
 class ArduinoFakeContext
 {
     ArduinoFake::details::FakeOverride_t _fakeOverrides;

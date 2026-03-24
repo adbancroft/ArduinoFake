@@ -14,13 +14,13 @@ static void test_extends_stream(void) {
   int print_int_var = 123;
   int stream_int_var = 321;
 
-  When(OverloadedMethod(ArduinoFake(Stream), print, size_t(char)))
+  When(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(char)))
       .AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(Stream), print, size_t(int, int)))
+  When(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(int, int)))
       .AlwaysReturn();
 
-  When(OverloadedMethod(ArduinoFake(Wire), print, size_t(char))).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(Wire), print, size_t(int, int)))
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(char))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(int, int)))
       .AlwaysReturn();
 
   Stream* stream(getArduinoFakeContext()._Stream.getFake());
@@ -32,30 +32,30 @@ static void test_extends_stream(void) {
   wire->print(print_char_var);
   wire->print(print_int_var, DEC);
 
-  Verify(OverloadedMethod(ArduinoFake(Stream), print, size_t(char))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(char))
              .Using(stream_char_var))
       .Once();
-  Verify(OverloadedMethod(ArduinoFake(Stream), print, size_t(int, int))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Stream, print, size_t(int, int))
              .Using(stream_int_var, DEC))
       .Once();
 
-  Verify(OverloadedMethod(ArduinoFake(Wire), print, size_t(char))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(char))
              .Using(print_char_var))
       .Once();
-  Verify(OverloadedMethod(ArduinoFake(Wire), print, size_t(int, int))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(int, int))
              .Using(print_int_var, DEC))
       .Once();
 }
 
 static void test_global_wire(void) {
-  When(Method(ArduinoFake(Wire), available)).Return(1);
-  When(OverloadedMethod(ArduinoFake(Wire), print, size_t(char))).Return(1);
+  When(Method(getArduinoFakeContext()._Wire, available)).Return(1);
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(char))).Return(1);
 
   TEST_ASSERT_EQUAL(1, Wire.available());
   TEST_ASSERT_EQUAL(1, Wire.print('A'));
 
-  Verify(Method(ArduinoFake(Wire), available)).Once();
-  Verify(OverloadedMethod(ArduinoFake(Wire), print, size_t(char)).Using('A'))
+  Verify(Method(getArduinoFakeContext()._Wire, available)).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, print, size_t(char)).Using('A'))
       .Once();
 }
 
@@ -65,17 +65,17 @@ static void test_basics(void) {
   uint8_t register_addr = 0xcd;
   int num_bytes_to_read = 1;
   bool send_stop = false;
-  When(OverloadedMethod(ArduinoFake(Wire), begin, void(void))).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(Wire), beginTransmission, void(uint8_t)))
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, begin, void(void))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, beginTransmission, void(uint8_t)))
       .AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(Wire), write, size_t(uint8_t)))
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, write, size_t(uint8_t)))
       .Return(true);
-  When(OverloadedMethod(ArduinoFake(Wire), endTransmission, uint8_t(bool)))
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, endTransmission, uint8_t(bool)))
       .Return(0);
-  When(OverloadedMethod(ArduinoFake(Wire), requestFrom, uint8_t(uint8_t, uint8_t)))
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, requestFrom, uint8_t(uint8_t, uint8_t)))
       .Return(0);
-  When(OverloadedMethod(ArduinoFake(Wire), available, int(void))).Return(1);
-  When(OverloadedMethod(ArduinoFake(Wire), read, int(void))).Return(1);
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, available, int(void))).Return(1);
+  When(OverloadedMethod(getArduinoFakeContext()._Wire, read, int(void))).Return(1);
 
   Wire.begin();
   Wire.beginTransmission(device_addr);
@@ -86,21 +86,21 @@ static void test_basics(void) {
     Wire.read();
   }
 
-  Verify(OverloadedMethod(ArduinoFake(Wire), begin, void(void))).Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), beginTransmission, void(uint8_t))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, begin, void(void))).Exactly(1);
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, beginTransmission, void(uint8_t))
              .Using(device_addr))
       .Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), write, size_t(uint8_t))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, write, size_t(uint8_t))
              .Using(register_addr))
       .Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), endTransmission, uint8_t(bool))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, endTransmission, uint8_t(bool))
              .Using(send_stop))
       .Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), requestFrom, uint8_t(uint8_t, uint8_t))
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, requestFrom, uint8_t(uint8_t, uint8_t))
              .Using(device_addr, num_bytes_to_read))
       .Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), available, int(void))).Exactly(1);
-  Verify(OverloadedMethod(ArduinoFake(Wire), read, int(void))).Exactly(1);
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, available, int(void))).Exactly(1);
+  Verify(OverloadedMethod(getArduinoFakeContext()._Wire, read, int(void))).Exactly(1);
 }
 
 namespace WireTest {

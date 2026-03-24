@@ -13,13 +13,13 @@ static void test_basics(void) {
   uint8_t buffer[] = {0x02, 0x03, 0x04};
   uint8_t *ptr = buffer;
 
-  When(OverloadedMethod(ArduinoFake(SPI), begin, void(void))).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), end, void(void))).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), beginTransaction, void(SPISettings)).Using(settings)).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), endTransaction, void(void))).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), transfer, uint8_t(uint8_t)).Using(data)).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), transfer16, uint16_t(uint16_t)).Using(data16)).AlwaysReturn();
-  When(OverloadedMethod(ArduinoFake(SPI), transfer, void(void*, size_t)).Using(ptr, sizeof(buffer))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, begin, void(void))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, end, void(void))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, beginTransaction, void(SPISettings)).Using(settings)).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, endTransaction, void(void))).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, transfer, uint8_t(uint8_t)).Using(data)).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, transfer16, uint16_t(uint16_t)).Using(data16)).AlwaysReturn();
+  When(OverloadedMethod(getArduinoFakeContext()._SPI, transfer, void(void*, size_t)).Using(ptr, sizeof(buffer))).AlwaysReturn();
 
   SPI.begin();
   SPI.beginTransaction(settings);
@@ -29,13 +29,13 @@ static void test_basics(void) {
   SPI.endTransaction();
   SPI.end();
 
-  Verify(OverloadedMethod(ArduinoFake(SPI), begin, void(void))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), end, void(void))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), beginTransaction, void(SPISettings))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), endTransaction, void(void))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), transfer, uint8_t(uint8_t))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), transfer16, uint16_t(uint16_t))).Once();
-  Verify(OverloadedMethod(ArduinoFake(SPI), transfer, void(void*, size_t))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, begin, void(void))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, end, void(void))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, beginTransaction, void(SPISettings))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, endTransaction, void(void))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, transfer, uint8_t(uint8_t))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, transfer16, uint16_t(uint16_t))).Once();
+  Verify(OverloadedMethod(getArduinoFakeContext()._SPI, transfer, void(void*, size_t))).Once();
 }
 
 namespace SpiTest {
