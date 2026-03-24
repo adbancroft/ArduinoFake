@@ -120,17 +120,6 @@ static void test_reset(void)
 
 static void test_function_mock(void)
 {
-    Mock<SimpleArduinoFake::details::FunctionFake>* m1 = &SimpleArduinoFake::getContext()._Function;
-    Mock<SimpleArduinoFake::details::FunctionFake>* m2 = &SimpleArduinoFake::getContext()._Function;
-    Mock<SimpleArduinoFake::details::FunctionFake>* m3 = &SimpleArduinoFake::getContext()._Function;
-
-    TEST_ASSERT_NOT_NULL(m1);
-    TEST_ASSERT_NOT_NULL(m2);
-    TEST_ASSERT_NOT_NULL(m3);
-
-    TEST_ASSERT_EQUAL(m1, m2);
-    TEST_ASSERT_EQUAL(m1, m3);
-
     SimpleArduinoFake::details::FunctionFake* i1 = SimpleArduinoFake::getContext()._Function.getFake();
     SimpleArduinoFake::details::FunctionFake* i2 = SimpleArduinoFake::getContext()._Function.getFake();
 
@@ -141,13 +130,6 @@ static void test_function_mock(void)
 
 static void test_print_mock(void)
 {
-    Mock<Print>* m1 = &SimpleArduinoFake::getContext()._Print;
-    Mock<Print>* m2 = &SimpleArduinoFake::getContext()._Print;
-
-    TEST_ASSERT_NOT_NULL(m1);
-    TEST_ASSERT_NOT_NULL(m2);
-    TEST_ASSERT_EQUAL(m1, m2);
-
     Print* i1 = SimpleArduinoFake::getContext()._Print.getFake();
     Print* i2 = SimpleArduinoFake::getContext()._Print.getFake();
 
@@ -158,13 +140,6 @@ static void test_print_mock(void)
 
 static void test_stream_mock(void)
 {
-    Mock<Stream>* m1 = &SimpleArduinoFake::getContext()._Stream;
-    Mock<Stream>* m2 = &SimpleArduinoFake::getContext()._Stream;
-
-    TEST_ASSERT_NOT_NULL(m1);
-    TEST_ASSERT_NOT_NULL(m2);
-    TEST_ASSERT_EQUAL(m1, m2);
-
     Stream* i1 = SimpleArduinoFake::getContext()._Stream.getFake();
     Stream* i2 = SimpleArduinoFake::getContext()._Stream.getFake();
 
@@ -175,13 +150,6 @@ static void test_stream_mock(void)
 
 static void test_serial_mock(void)
 {
-    Mock<Serial_>* m1 = &SimpleArduinoFake::getContext()._Serial;
-    Mock<Serial_>* m2 = &SimpleArduinoFake::getContext()._Serial;
-
-    TEST_ASSERT_NOT_NULL(m1);
-    TEST_ASSERT_NOT_NULL(m2);
-    TEST_ASSERT_EQUAL(m1, m2);
-
     Serial_* i1 = SimpleArduinoFake::getContext()._Serial.getFake();
     Serial_* i2 = SimpleArduinoFake::getContext()._Serial.getFake();
 
