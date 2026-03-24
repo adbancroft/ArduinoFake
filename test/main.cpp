@@ -22,7 +22,7 @@
 
 void setUp(void)
 {
-    ArduinoFakeReset();
+    getArduinoFakeContext().Reset();
 }
 void tearDown(void) {}
 

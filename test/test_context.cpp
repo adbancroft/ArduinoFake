@@ -27,7 +27,7 @@ void assert_test_reset(FakeMethod fakeMethod, std::function<void(void)> realMeth
     Verify(fakeMethod).Once();
 
     // Reset all fakes
-    ArduinoFakeReset();
+    getArduinoFakeContext().Reset();
     
     try {
         // This should throw an exception...
@@ -122,7 +122,7 @@ static void test_function_mock(void)
 {
     Mock<ArduinoFake::details::FunctionFake>* m1 = &ArduinoFake(Function);
     Mock<ArduinoFake::details::FunctionFake>* m2 = &ArduinoFake(Function);
-    Mock<ArduinoFake::details::FunctionFake>* m3 = &ArduinoFake();
+    Mock<ArduinoFake::details::FunctionFake>* m3 = &getArduinoFakeContext()._Function;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);

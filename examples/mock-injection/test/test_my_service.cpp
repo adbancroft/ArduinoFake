@@ -5,11 +5,6 @@ using namespace fakeit;
 
 #include "MyService.h"
 
-void setUp(void)
-{
-    ArduinoFakeReset();
-}
-
 void test_connect(void)
 {
     When(Method(ArduinoFake(Client), stop)).AlwaysReturn();

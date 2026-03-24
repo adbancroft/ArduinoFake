@@ -8,154 +8,154 @@ using namespace fakeit;
 
 static void test_init(void)
 {
-    When(Method(ArduinoFake(), init)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, init)).AlwaysReturn();
 
     init();
 
-    Verify(Method(ArduinoFake(), init)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, init)).Once();
 }
 
 static void test_timestamps(void)
 {
-    When(Method(ArduinoFake(), micros)).AlwaysReturn(100000);
-    When(Method(ArduinoFake(), millis)).AlwaysReturn(200000);
+    When(Method(getArduinoFakeContext()._Function, micros)).AlwaysReturn(100000);
+    When(Method(getArduinoFakeContext()._Function, millis)).AlwaysReturn(200000);
 
     TEST_ASSERT_EQUAL(100000, micros());
     TEST_ASSERT_EQUAL(200000, millis());
 
-    Verify(Method(ArduinoFake(), micros)).Once();
-    Verify(Method(ArduinoFake(), millis)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, micros)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, millis)).Once();
 }
 
 static void test_pin_mode(void)
 {
-    When(Method(ArduinoFake(), pinMode)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, pinMode)).AlwaysReturn();
 
     pinMode(3, INPUT);
-    Verify(Method(ArduinoFake(), pinMode).Using(3, INPUT)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, pinMode).Using(3, INPUT)).Once();
 
     pinMode(3, OUTPUT);
-    Verify(Method(ArduinoFake(), pinMode).Using(3, INPUT)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, pinMode).Using(3, INPUT)).Once();
 }
 
 static void test_digital_pin(void)
 {
-    When(Method(ArduinoFake(), digitalWrite)).AlwaysReturn();
-    When(Method(ArduinoFake(), digitalRead)).AlwaysReturn(LOW);
+    When(Method(getArduinoFakeContext()._Function, digitalWrite)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, digitalRead)).AlwaysReturn(LOW);
 
     digitalWrite(3, HIGH);
-    Verify(Method(ArduinoFake(), digitalWrite).Using(3, HIGH)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, digitalWrite).Using(3, HIGH)).Once();
 
     TEST_ASSERT_EQUAL(LOW, digitalRead(4));
-    Verify(Method(ArduinoFake(), digitalRead).Using(4)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, digitalRead).Using(4)).Once();
 }
 
 static void test_analog_pin(void)
 {
-    When(Method(ArduinoFake(), analogWrite)).AlwaysReturn();
-    When(Method(ArduinoFake(), analogRead)).AlwaysReturn(123);
+    When(Method(getArduinoFakeContext()._Function, analogWrite)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, analogRead)).AlwaysReturn(123);
 
     analogWrite(3, 321);
-    Verify(Method(ArduinoFake(), analogWrite).Using(3, 321)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, analogWrite).Using(3, 321)).Once();
 
     TEST_ASSERT_EQUAL(123, analogRead(4));
-    Verify(Method(ArduinoFake(), analogRead).Using(4)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, analogRead).Using(4)).Once();
 }
 
 static void test_analog_read_resolution(void)
 {
-    When(Method(ArduinoFake(), analogReadResolution)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, analogReadResolution)).AlwaysReturn();
 
     analogReadResolution(12);
 
-    Verify(Method(ArduinoFake(), analogReadResolution).Using(12)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, analogReadResolution).Using(12)).Once();
 }
 
 static void test_yield(void)
 {
-    When(Method(ArduinoFake(), yield)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, yield)).AlwaysReturn();
 
     yield();
 
-    Verify(Method(ArduinoFake(), yield)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, yield)).Once();
 }
 
 static void test_delay(void)
 {
-    When(Method(ArduinoFake(), delay)).AlwaysReturn();
-    When(Method(ArduinoFake(), delayMicroseconds)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, delay)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, delayMicroseconds)).AlwaysReturn();
 
     delay(100);
     delayMicroseconds(200);
 
-    Verify(Method(ArduinoFake(), delay).Using(100)).Once();
-    Verify(Method(ArduinoFake(), delayMicroseconds).Using(200)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, delay).Using(100)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, delayMicroseconds).Using(200)).Once();
 }
 
 static void test_pulsein(void)
 {
-    When(Method(ArduinoFake(), pulseIn)).AlwaysReturn(1000);
+    When(Method(getArduinoFakeContext()._Function, pulseIn)).AlwaysReturn(1000);
 
     TEST_ASSERT_EQUAL(1000,  pulseIn(10, HIGH, 1234));
 
-    Verify(Method(ArduinoFake(), pulseIn).Using(10, HIGH, 1234)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, pulseIn).Using(10, HIGH, 1234)).Once();
 }
 
 static void test_shift(void)
 {
-    When(Method(ArduinoFake(), shiftIn)).AlwaysReturn(8);
-    When(Method(ArduinoFake(), shiftOut)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, shiftIn)).AlwaysReturn(8);
+    When(Method(getArduinoFakeContext()._Function, shiftOut)).AlwaysReturn();
 
     shiftOut(10, 11, LSBFIRST, 8);
-    Verify(Method(ArduinoFake(), shiftOut).Using(10, 11, LSBFIRST, 8)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, shiftOut).Using(10, 11, LSBFIRST, 8)).Once();
 
     TEST_ASSERT_EQUAL(8, shiftIn(5, 6, MSBFIRST));
-    Verify(Method(ArduinoFake(), shiftIn).Using(5, 6, MSBFIRST)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, shiftIn).Using(5, 6, MSBFIRST)).Once();
 }
 
 static void test_detach(void)
 {
-    When(Method(ArduinoFake(), detachInterrupt)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, detachInterrupt)).AlwaysReturn();
 
     detachInterrupt(1);
 
-    Verify(Method(ArduinoFake(), detachInterrupt).Using(1)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, detachInterrupt).Using(1)).Once();
 }
 
 static void test_attach(void)
 {
-    When(Method(ArduinoFake(), attachInterrupt)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, attachInterrupt)).AlwaysReturn();
 
     attachInterrupt(1, (void (*)(void))NULL, FALLING);
     attachInterrupt(2, (void (*)(void))NULL, CHANGE);
     attachInterrupt(3, (void (*)(void))NULL, RISING);
 
-    Verify(Method(ArduinoFake(), attachInterrupt)).Exactly(3);
+    Verify(Method(getArduinoFakeContext()._Function, attachInterrupt)).Exactly(3);
 }
 
 static void test_cli(void)
 {
-    When(Method(ArduinoFake(), cli)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, cli)).AlwaysReturn();
 
     cli();
 
-    Verify(Method(ArduinoFake(), cli)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, cli)).Once();
 }
 
 static void test_sei(void)
 {
-    When(Method(ArduinoFake(), sei)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, sei)).AlwaysReturn();
 
     sei();
 
-    Verify(Method(ArduinoFake(), sei)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, sei)).Once();
 }
 
 static void test_random(void)
 {
-    When(Method(ArduinoFake(), randomSeed)).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake(), random, long(long))).Return(10, 11);
-    When(OverloadedMethod(ArduinoFake(), random, long(long, long))).Return(20, 21);
+    When(Method(getArduinoFakeContext()._Function, randomSeed)).AlwaysReturn();
+    When(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long))).Return(10, 11);
+    When(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long, long))).Return(20, 21);
 
     randomSeed(123);
 
@@ -164,19 +164,19 @@ static void test_random(void)
     TEST_ASSERT_EQUAL(20,  random(5, 20));
     TEST_ASSERT_EQUAL(21,  random(10, 25));
 
-    Verify(Method(ArduinoFake(), randomSeed).Using(123)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, randomSeed).Using(123)).Once();
 
-    Verify(OverloadedMethod(ArduinoFake(), random, long(long)).Using(10)).Once();
-    Verify(OverloadedMethod(ArduinoFake(), random, long(long)).Using(15)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long)).Using(10)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long)).Using(15)).Once();
 
-    Verify(OverloadedMethod(ArduinoFake(), random, long(long, long)).Using(5, 20)).Once();
-    Verify(OverloadedMethod(ArduinoFake(), random, long(long, long)).Using(10, 25)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long, long)).Using(5, 20)).Once();
+    Verify(OverloadedMethod(getArduinoFakeContext()._Function, random, long(long, long)).Using(10, 25)).Once();
 }
 
 static void test_tone(void)
 {
-    When(Method(ArduinoFake(), tone)).AlwaysReturn();
-    When(Method(ArduinoFake(), noTone)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, tone)).AlwaysReturn();
+    When(Method(getArduinoFakeContext()._Function, noTone)).AlwaysReturn();
 
     tone(7, 1047, 8);
     tone(8, 1319, 4);
@@ -186,79 +186,79 @@ static void test_tone(void)
     noTone(8);
     noTone(9);
 
-    Verify(Method(ArduinoFake(), tone).Using(7, 1047, 8)).Once();
-    Verify(Method(ArduinoFake(), tone).Using(8, 1319, 4)).Once();
-    Verify(Method(ArduinoFake(), tone).Using(9, 1568, 2)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, tone).Using(7, 1047, 8)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, tone).Using(8, 1319, 4)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, tone).Using(9, 1568, 2)).Once();
 
-    Verify(Method(ArduinoFake(), noTone).Using(7)).Once();
-    Verify(Method(ArduinoFake(), noTone).Using(8)).Once();
-    Verify(Method(ArduinoFake(), noTone).Using(9)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, noTone).Using(7)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, noTone).Using(8)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, noTone).Using(9)).Once();
 }
 
 static void test_map(void)
 {
-    When(Method(ArduinoFake(), map)).Return(5);
+    When(Method(getArduinoFakeContext()._Function, map)).Return(5);
 
     TEST_ASSERT_EQUAL(5, map(50, 0, 100, 0, 10));
 
-    Verify(Method(ArduinoFake(), map).Using(50, 0, 100, 0, 10)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, map).Using(50, 0, 100, 0, 10)).Once();
 }
 
 static void test_digitalPinToPort(void)
 {
-    When(Method(ArduinoFake(), digitalPinToPort)).Return(5);
+    When(Method(getArduinoFakeContext()._Function, digitalPinToPort)).Return(5);
 
     TEST_ASSERT_EQUAL(5, digitalPinToPort(50));
 
-    Verify(Method(ArduinoFake(), digitalPinToPort)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, digitalPinToPort)).Once();
 }
 
 static void test_digitalPinToBitMask(void)
 {
-    When(Method(ArduinoFake(), digitalPinToBitMask)).Return(5);
+    When(Method(getArduinoFakeContext()._Function, digitalPinToBitMask)).Return(5);
 
     TEST_ASSERT_EQUAL(5, digitalPinToBitMask(50));
 
-    Verify(Method(ArduinoFake(), digitalPinToBitMask)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, digitalPinToBitMask)).Once();
 }
 
 static void test_digitalPinToTimer(void)
 {
-    When(Method(ArduinoFake(), digitalPinToTimer)).Return(5);
+    When(Method(getArduinoFakeContext()._Function, digitalPinToTimer)).Return(5);
 
     TEST_ASSERT_EQUAL(5, digitalPinToTimer(50));
 
-    Verify(Method(ArduinoFake(), digitalPinToTimer)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, digitalPinToTimer)).Once();
 }
 
 static void test_portOutputRegister(void)
 {
     volatile uint8_t expected = 5;
-    When(Method(ArduinoFake(), portOutputRegister)).Return(&expected);
+    When(Method(getArduinoFakeContext()._Function, portOutputRegister)).Return(&expected);
 
     TEST_ASSERT_EQUAL(5, *portOutputRegister(50));
 
-    Verify(Method(ArduinoFake(), portOutputRegister)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, portOutputRegister)).Once();
 }
 
 static void test_portInputRegister(void)
 {
     volatile uint8_t expected = 5;
-    When(Method(ArduinoFake(), portInputRegister)).Return(&expected);
+    When(Method(getArduinoFakeContext()._Function, portInputRegister)).Return(&expected);
 
     TEST_ASSERT_EQUAL(5, *portInputRegister(50));
 
-    Verify(Method(ArduinoFake(), portInputRegister)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, portInputRegister)).Once();
 }
 
 static void test_portModeRegister(void)
 {
     volatile uint8_t expected = 5;
-    When(Method(ArduinoFake(), portModeRegister)).Return(&expected);
+    When(Method(getArduinoFakeContext()._Function, portModeRegister)).Return(&expected);
 
     TEST_ASSERT_EQUAL(5, *portModeRegister(50));
 
-    Verify(Method(ArduinoFake(), portModeRegister)).Once();
+    Verify(Method(getArduinoFakeContext()._Function, portModeRegister)).Once();
 }
 
 namespace FunctionTest

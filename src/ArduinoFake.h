@@ -34,9 +34,6 @@
 
 /// @endcond
 
-#define ArduinoFakeReset() \
-    getArduinoFakeContext().Reset()
-
 #define ArduinoFakeInstance(mock, ...) \
     _ArduinoFakeGetMock(mock).getFake(__VA_ARGS__)
 
@@ -44,8 +41,8 @@
 
 class ArduinoFakeContext
 {
-public:
     ArduinoFake::details::FakeOverride_t _fakeOverrides;
+public:
     ArduinoFake::details::ArduinoFake_t<ArduinoFake::details::FunctionFake> _Function;
     ArduinoFake::details::OverrideableArduinoFake_t<Serial_> _Serial;
     ArduinoFake::details::OverrideableArduinoFake_t<TwoWire> _Wire;
@@ -86,7 +83,6 @@ public:
         _fakeOverrides.setOverride(&::SPI, &_SPI);
         _fakeOverrides.setOverride(&::EEPROM, &_EEPROM);
     }
-
 };
 
 ArduinoFakeContext& getArduinoFakeContext();
