@@ -1,6 +1,6 @@
 // clang-format off
 #include <Arduino.h>
-#include <ArduinoFake.h>
+#include "SimpleArduinoFake.h"
 #include <cstdlib>
 #include <unity.h>
 
@@ -22,7 +22,7 @@
 
 void setUp(void)
 {
-    ArduinoFake::getContext().Reset();
+    SimpleArduinoFake::getContext().Reset();
 }
 void tearDown(void) {}
 

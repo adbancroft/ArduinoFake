@@ -1,15 +1,15 @@
 {
-  "name": "ArduinoFake",
+  "name": "SimpleArduinoFake",
   "version": "2.0.0",
   "keywords": "test, mock, fake, arduino",
   "description": "Arduino mocking made easy.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FabioBatSilva/ArduinoFake.git"
+    "url": "https://github.com/adbancroft/SimpleArduinoFake.git"
   },
   "authors": {
-    "name": "Fabio B. Silva",
-    "email": "fabio.bat.silva@gmail.com"
+    "name": "Andrew Bancroft",
+    "email": ""
   },
   "exclude": [
     "test"

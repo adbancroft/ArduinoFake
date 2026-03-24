@@ -1,6 +1,6 @@
-#include "ArduinoFake.h"
+#include "SimpleArduinoFake.h"
 
-namespace ArduinoFake {
+namespace SimpleArduinoFake {
 
 Context& getContext()
 {

@@ -1,10 +1,17 @@
 # ArduinoFake
 
-[![Build Status](https://travis-ci.org/FabioBatSilva/ArduinoFake.svg?branch=master)](https://travis-ci.org/FabioBatSilva/ArduinoFake)
+[![Build](https://github.com/adbancroft/SimpleArduinoFake/actions/workflows/check.yaml/badge.svg)](https://github.com/adbancroft/SimpleArduinoFake/actions/workflows/check.yml)
 
-`ArduinoFake` is a simple mocking framework for Arduino.
-`ArduinoFake` is based on [FakeIt](https://github.com/eranpeer/FakeIt) and can be used for testing your arduino project natively. No arduino required !
-#
+`SimpleArduinoFake` is a simple mocking framework for Arduino,, based on [FakeIt](https://github.com/eranpeer/FakeIt). Its goal is to allow unit testing of your Arduino project *natively*, with no Arduino. This supports:
+1. Complex testing that might exceed physical board limits. E.g. RAM
+2. Unit test coverage, which is not possible on a physical board.
+
+This project is a hard fork of [`ArduinoFake`](https://github.com/FabioBatSilva/ArduinoFake), with some simplifications and bug fixes:
+1. No proxies. Arduino classes (E.g. `Stream`) are mocked directly rather than via a proxy object, so code is DRY
+2. No [object slicing](https://github.com/FabioBatSilva/ArduinoFake/issues/85)
+3. No [memory leaks](https://github.com/FabioBatSilva/ArduinoFake/issues/86)
+5. More modern code style for a simpler code base: no macros, use of namespaces & no dynamic memory allocation
+5. Compiles on Windows, using mingw64.
 
 ## Quickstart
 
@@ -13,7 +20,7 @@
 You should include the following header in your test file:
 
 ```c++
-#include <ArduinoFake.h>
+#include <SimpleArduinoFake.h>
 ```
 
 ### Stubbing
@@ -34,28 +41,29 @@ void loop()
 }
 ```
 
-It can be tested using `ArduinoFake`:
+It can be tested using `SimpleArduinoFake`:
 ```c++
-#include <ArduinoFake.h>
+#include <SimpleArduinoFake.h>
 
 using namespace fakeit;
 
 // test/test_main.cpp
 void test_loop(void)
 {
-    When(Method(ArduinoFake(), digitalWrite)).AlwaysReturn();
-    When(Method(ArduinoFake(), delay)).AlwaysReturn();
+	auto &functionFake = SimpleArduinoFake::getContext()._Function;
+    
+	When(Method(functionFake, digitalWrite)).AlwaysReturn();
+    When(Method(functionFake, delay)).AlwaysReturn();
 
     loop();
 
-    Verify(Method(ArduinoFake(), digitalWrite).Using(LED_BUILTIN, HIGH)).Once();
-    Verify(Method(ArduinoFake(), digitalWrite).Using(LED_BUILTIN, LOW)).Once();
-    Verify(Method(ArduinoFake(), delay).Using(100)).Exactly(2_Times);
+    Verify(Method(functionFake, digitalWrite).Using(LED_BUILTIN, HIGH)).Once();
+    Verify(Method(functionFake, digitalWrite).Using(LED_BUILTIN, LOW)).Once();
+    Verify(Method(functionFake, delay).Using(100)).Exactly(2_Times);
 }
 ```
 
-Checkout the [examples](./examples) for many more examples!
-Or take a look at the [tests](./test)
+Look at the [examples](./examples) or the [tests](./test) for examples.
 
 ## Troubleshooting
 
@@ -68,4 +76,6 @@ Program errored with 3221225477 code
 Check to make sure you have stubbed **all** the Arduino methods you are calling.
 
 # Contributing
-If you want to extend `ArduinoFake` library to add missing functions (for example  `attachInterrupt`) see [contribution guidelines](CONTRIBUTING.md).
+Contributions are welcome:
+1. The project uses [PlatformIO](https://platformio.org/) for building, unit testing and CI.
+2. Make sure your changes are covered by unit tests.

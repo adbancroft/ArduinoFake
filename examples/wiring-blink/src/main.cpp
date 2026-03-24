@@ -5,7 +5,7 @@
  */
 
 #ifdef UNIT_TEST
-    #include "ArduinoFake.h"
+    #include "SimpleArduinoFake.h"
 #else
     #include "Arduino.h"
 #endif

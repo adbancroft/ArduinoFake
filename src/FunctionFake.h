@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace ArduinoFake {
+namespace SimpleArduinoFake {
 
 namespace details {
     

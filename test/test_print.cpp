@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <ArduinoFake.h>
+#include "SimpleArduinoFake.h"
 #include <unity.h>
 #include "unity_filename_helper.h"
 
@@ -7,14 +7,15 @@ using namespace fakeit;
 
 static void test_availableForWrite(void)
 {
-    When(Method(ArduinoFake::getContext()._Print, availableForWrite)).Return(-100);
+    auto &printFake = SimpleArduinoFake::getContext()._Print;
+    When(Method(printFake, availableForWrite)).Return(-100);
 
-    Print* print(ArduinoFake::getContext()._Print.getFake());
+    Print* print(printFake.getFake());
 
     int result = print->availableForWrite();
     TEST_ASSERT_EQUAL(-100, result);
 
-    Verify(Method(ArduinoFake::getContext()._Print, availableForWrite)).Once();
+    Verify(Method(printFake, availableForWrite)).Once();
 }
 
 static void test_print_variables(void)
@@ -29,17 +30,18 @@ static void test_print_variables(void)
     unsigned int unsigned_int_var = 321;
     unsigned long unsigned_long_var = 87654321;
 
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(char))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(const char *))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned char, int))).AlwaysReturn();
+    auto &printFake = SimpleArduinoFake::getContext()._Print;
+    When(OverloadedMethod(printFake, print, size_t(char))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(const char *))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(unsigned char, int))).AlwaysReturn();
 
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(int, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(long, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(double, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned int, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned long, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(int, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(long, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(double, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(unsigned int, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, print, size_t(unsigned long, int))).AlwaysReturn();
 
-    Print* print(ArduinoFake::getContext()._Print.getFake());
+    Print* print(printFake.getFake());
 
     print->print(char_var);
     print->print(char_array_var);
@@ -51,15 +53,15 @@ static void test_print_variables(void)
     print->print(unsigned_int_var, DEC);
     print->print(unsigned_long_var, DEC);
 
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(char)).Using(char_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(const char *)).Using(char_array_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned char, int)).Using(unsigned_char_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(char)).Using(char_var)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(const char *)).Using(char_array_var)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(unsigned char, int)).Using(unsigned_char_var, DEC)).Once();
 
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(int, int)).Using(int_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(long, int)).Using(long_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(double, int)).Using(double_var, BIN)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned int, int)).Using(unsigned_int_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(unsigned long, int)).Using(unsigned_long_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(int, int)).Using(int_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(long, int)).Using(long_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(double, int)).Using(double_var, BIN)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(unsigned int, int)).Using(unsigned_int_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, print, size_t(unsigned long, int)).Using(unsigned_long_var, DEC)).Once();
 }
 
 static void test_println_variables(void)
@@ -74,18 +76,19 @@ static void test_println_variables(void)
     unsigned int unsigned_int_var = 321;
     unsigned long unsigned_long_var = 87654321;
 
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t())).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(char))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(const char *))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned char, int))).AlwaysReturn();
+    auto &printFake = SimpleArduinoFake::getContext()._Print;
+    When(OverloadedMethod(printFake, println, size_t())).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(char))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(const char *))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(unsigned char, int))).AlwaysReturn();
 
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(int, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(long, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(double, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned int, int))).AlwaysReturn();
-    When(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned long, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(int, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(long, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(double, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(unsigned int, int))).AlwaysReturn();
+    When(OverloadedMethod(printFake, println, size_t(unsigned long, int))).AlwaysReturn();
 
-    Print* print(ArduinoFake::getContext()._Print.getFake());
+    Print* print(printFake.getFake());
 
     print->println();
     print->println(char_var);
@@ -98,16 +101,16 @@ static void test_println_variables(void)
     print->println(unsigned_int_var, DEC);
     print->println(unsigned_long_var, DEC);
 
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t())).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(char)).Using(char_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(const char *)).Using(char_array_var)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned char, int)).Using(unsigned_char_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t())).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(char)).Using(char_var)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(const char *)).Using(char_array_var)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(unsigned char, int)).Using(unsigned_char_var, DEC)).Once();
 
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(int, int)).Using(int_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(long, int)).Using(long_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(double, int)).Using(double_var, BIN)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned int, int)).Using(unsigned_int_var, DEC)).Once();
-    Verify(OverloadedMethod(ArduinoFake::getContext()._Print, println, size_t(unsigned long, int)).Using(unsigned_long_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(int, int)).Using(int_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(long, int)).Using(long_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(double, int)).Using(double_var, BIN)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(unsigned int, int)).Using(unsigned_int_var, DEC)).Once();
+    Verify(OverloadedMethod(printFake, println, size_t(unsigned long, int)).Using(unsigned_long_var, DEC)).Once();
 }
 
 namespace PrintTest

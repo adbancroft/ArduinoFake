@@ -20,7 +20,7 @@
   #define NO_IGNORE_CHAR  '\x01' // a char not found in a valid ASCII numeric field
 #endif
 
-namespace ArduinoFake {
+namespace SimpleArduinoFake {
 
 class Context
 {

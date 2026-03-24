@@ -16,7 +16,7 @@
 #endif
 #include <single_header/standalone/fakeit.hpp>
 
-namespace ArduinoFake {
+namespace SimpleArduinoFake {
 
 namespace details {
 
