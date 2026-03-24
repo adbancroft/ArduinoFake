@@ -5,28 +5,28 @@ using namespace fakeit;
 
 void test_setup(void)
 {
-    When(Method(ArduinoFake(), pinMode)).Return();
+    When(Method(ArduinoFake::getContext()._Function, pinMode)).Return();
 
     setup();
 
-    Verify(Method(ArduinoFake(), pinMode).Using(LED_BUILTIN, OUTPUT)).Once();
+    Verify(Method(ArduinoFake::getContext()._Function, pinMode).Using(LED_BUILTIN, OUTPUT)).Once();
 }
 
 void test_loop(void)
 {
-    When(Method(ArduinoFake(), digitalWrite)).AlwaysReturn();
-    When(Method(ArduinoFake(), delay)).AlwaysReturn();
+    When(Method(ArduinoFake::getContext()._Function, digitalWrite)).AlwaysReturn();
+    When(Method(ArduinoFake::getContext()._Function, delay)).AlwaysReturn();
 
     loop();
 
-    Verify(Method(ArduinoFake(), digitalWrite).Using(LED_BUILTIN, HIGH)).Once();
-    Verify(Method(ArduinoFake(), digitalWrite).Using(LED_BUILTIN, LOW)).Once();
-    Verify(Method(ArduinoFake(), delay).Using(100)).Exactly(2_Times);
+    Verify(Method(ArduinoFake::getContext()._Function, digitalWrite).Using(LED_BUILTIN, HIGH)).Once();
+    Verify(Method(ArduinoFake::getContext()._Function, digitalWrite).Using(LED_BUILTIN, LOW)).Once();
+    Verify(Method(ArduinoFake::getContext()._Function, delay).Using(100)).Exactly(2_Times);
 }
 
 void setUp(void)
 {
-    ArduinoFakeReset();
+    ArduinoFake::getContext().Reset();
 }
 
 int main(int argc, char **argv)

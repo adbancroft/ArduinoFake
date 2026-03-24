@@ -2,55 +2,55 @@
 
 void Stream::setTimeout(unsigned long timeout)
 {
-    ArduinoFakeInstance(Stream, this)->setTimeout(timeout);
+    ArduinoFake::getContext()._Stream.getFake(this)->setTimeout(timeout);
 }
 
 bool Stream::find(const char *target)
 {
-    return ArduinoFakeInstance(Stream, this)->find(target);
+    return ArduinoFake::getContext()._Stream.getFake(this)->find(target);
 }
 
 bool Stream::find(const char *target, size_t length)
 {
-    return ArduinoFakeInstance(Stream, this)->find(target, length);
+    return ArduinoFake::getContext()._Stream.getFake(this)->find(target, length);
 }
 
 bool Stream::findUntil(const char *target, const char *terminator)
 {
-    return ArduinoFakeInstance(Stream, this)->findUntil(target, terminator);
+    return ArduinoFake::getContext()._Stream.getFake(this)->findUntil(target, terminator);
 }
 
 bool Stream::findUntil(const char *target, size_t targetLen, const char *terminator, size_t termLen)
 {
-    return ArduinoFakeInstance(Stream, this)->findUntil(target, targetLen, terminator, termLen);
+    return ArduinoFake::getContext()._Stream.getFake(this)->findUntil(target, targetLen, terminator, termLen);
 }
 
 long Stream::parseInt(LookaheadMode lookahead, char ignore)
 {
-    return ArduinoFakeInstance(Stream, this)->parseInt(lookahead, ignore);
+    return ArduinoFake::getContext()._Stream.getFake(this)->parseInt(lookahead, ignore);
 }
 
 float Stream::parseFloat(LookaheadMode lookahead, char ignore)
 {
-    return ArduinoFakeInstance(Stream, this)->parseFloat(lookahead, ignore);
+    return ArduinoFake::getContext()._Stream.getFake(this)->parseFloat(lookahead, ignore);
 }
 
 size_t Stream::readBytes(char *buffer, size_t length)
 {
-    return ArduinoFakeInstance(Stream, this)->readBytes(buffer, length);
+    return ArduinoFake::getContext()._Stream.getFake(this)->readBytes(buffer, length);
 }
 
 size_t Stream::readBytesUntil(char terminator, char *buffer, size_t length)
 {
-    return ArduinoFakeInstance(Stream, this)->readBytesUntil(terminator, buffer, length);
+    return ArduinoFake::getContext()._Stream.getFake(this)->readBytesUntil(terminator, buffer, length);
 }
 
 String Stream::readString()
 {
-    return ArduinoFakeInstance(Stream, this)->readString();
+    return ArduinoFake::getContext()._Stream.getFake(this)->readString();
 }
 
 String Stream::readStringUntil(char terminator)
 {
-    return ArduinoFakeInstance(Stream, this)->readStringUntil(terminator);
+    return ArduinoFake::getContext()._Stream.getFake(this)->readStringUntil(terminator);
 }

@@ -16,46 +16,22 @@
 #include "ArduinoFakeOverride.h"
 #include "FunctionFake.h"
 
-/// @cond
-// Implementation details
+namespace ArduinoFake {
 
-#define _ArduinoFakeGetMock(mock) \
-    getArduinoFakeContext()._##mock
-
-#define _ArduinoFakeGetFunction() _ArduinoFakeGetMock(Function)
-#define _ArduinoFakeGetSerial() _ArduinoFakeGetMock(Serial)
-#define _ArduinoFakeGetWire() _ArduinoFakeGetMock(Wire)
-#define _ArduinoFakeGetSPI() _ArduinoFakeGetMock(SPI)
-#define _ArduinoFakeGetEEPROM() _ArduinoFakeGetMock(EEPROM)
-#define _ArduinoFakeGetStream() _ArduinoFakeGetMock(Stream)
-#define _ArduinoFakeGetClient() _ArduinoFakeGetMock(Client)
-#define _ArduinoFakeGetPrint() _ArduinoFakeGetMock(Print)
-#define _ArduinoFakeGet() _ArduinoFakeGetMock(Function)
-
-/// @endcond
-
-#define ArduinoFakeReset() \
-    getArduinoFakeContext().Reset()
-
-#define ArduinoFakeInstance(mock, ...) \
-    _ArduinoFakeGetMock(mock).getFake(__VA_ARGS__)
-
-#define ArduinoFake(mock) _ArduinoFakeGet##mock()
-
-class ArduinoFakeContext
+class Context
 {
+    details::FakeOverride_t _fakeOverrides;
 public:
-    ArduinoFake::details::FakeOverride_t _fakeOverrides;
-    ArduinoFake::details::ArduinoFake_t<ArduinoFake::details::FunctionFake> _Function;
-    ArduinoFake::details::OverrideableArduinoFake_t<Serial_> _Serial;
-    ArduinoFake::details::OverrideableArduinoFake_t<TwoWire> _Wire;
-    ArduinoFake::details::OverrideableArduinoFake_t<Stream> _Stream;
-    ArduinoFake::details::OverrideableArduinoFake_t<Client> _Client;
-    ArduinoFake::details::OverrideableArduinoFake_t<Print> _Print;
-    ArduinoFake::details::OverrideableArduinoFake_t<SPIClass> _SPI;
-    ArduinoFake::details::OverrideableArduinoFake_t<EEPROMClass> _EEPROM;
+    details::ArduinoFake_t<details::FunctionFake> _Function;
+    details::OverrideableArduinoFake_t<Serial_> _Serial;
+    details::OverrideableArduinoFake_t<TwoWire> _Wire;
+    details::OverrideableArduinoFake_t<Stream> _Stream;
+    details::OverrideableArduinoFake_t<Client> _Client;
+    details::OverrideableArduinoFake_t<Print> _Print;
+    details::OverrideableArduinoFake_t<SPIClass> _SPI;
+    details::OverrideableArduinoFake_t<EEPROMClass> _EEPROM;
 
-    ArduinoFakeContext()
+    Context()
         : _fakeOverrides()
         , _Function()
         , _Serial(_fakeOverrides)
@@ -86,9 +62,10 @@ public:
         _fakeOverrides.setOverride(&::SPI, &_SPI);
         _fakeOverrides.setOverride(&::EEPROM, &_EEPROM);
     }
-
 };
 
-ArduinoFakeContext& getArduinoFakeContext();
+Context& getContext();
+
+}
 
 // clang-format on

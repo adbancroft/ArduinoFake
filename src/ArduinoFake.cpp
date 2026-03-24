@@ -1,7 +1,11 @@
 #include "ArduinoFake.h"
 
-ArduinoFakeContext& getArduinoFakeContext()
+namespace ArduinoFake {
+
+Context& getContext()
 {
-    static ArduinoFakeContext arduinoFakeContext;
+    static Context arduinoFakeContext;
     return arduinoFakeContext;
+}
+
 }

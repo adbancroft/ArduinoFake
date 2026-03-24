@@ -7,8 +7,8 @@ using namespace fakeit;
 
 static void test_single_instance(void)
 {
-    ArduinoFakeContext* context1 = &getArduinoFakeContext();
-    ArduinoFakeContext* context2 = &getArduinoFakeContext();
+    ArduinoFake::Context* context1 = &ArduinoFake::getContext();
+    ArduinoFake::Context* context2 = &ArduinoFake::getContext();
 
     TEST_ASSERT_NOT_NULL(context1);
     TEST_ASSERT_NOT_NULL(context2);
@@ -27,7 +27,7 @@ void assert_test_reset(FakeMethod fakeMethod, std::function<void(void)> realMeth
     Verify(fakeMethod).Once();
 
     // Reset all fakes
-    ArduinoFakeReset();
+    ArduinoFake::getContext().Reset();
     
     try {
         // This should throw an exception...
@@ -42,64 +42,64 @@ void assert_test_reset(FakeMethod fakeMethod, std::function<void(void)> realMeth
 
 static void test_reset_function(void)
 {
-    auto method = Method(ArduinoFake(Function), millis);
+    auto method = Method(ArduinoFake::getContext()._Function, millis);
     When(method).AlwaysReturn(101L);
     assert_test_reset(method, []() { (void)millis(); });
 }
 
 static void test_reset_print(void)
 {
-    auto method = OverloadedMethod(ArduinoFake(Print), print, size_t(const char[]));
+    auto method = OverloadedMethod(ArduinoFake::getContext()._Print, print, size_t(const char[]));
     When(method).AlwaysDo([](const char *str) {
         std::cout << str;
         return strlen(str);
     });
-    assert_test_reset(method, []() { (ArduinoFakeInstance(Print))->print("abc"); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._Print.getFake())->print("abc"); });
 }
 
 static void test_reset_serial(void)
 {
-    auto method = Method(ArduinoFake(Serial), end);
+    auto method = Method(ArduinoFake::getContext()._Serial, end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeInstance(Serial))->end(); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._Serial.getFake())->end(); });
 }
 
 static void test_reset_wire(void)
 {
-    auto method = Method(ArduinoFake(Wire), end);
+    auto method = Method(ArduinoFake::getContext()._Wire, end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeInstance(Wire))->end(); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._Wire.getFake())->end(); });
 }
 
 static void test_reset_stream(void)
 {
-    auto method = OverloadedMethod(ArduinoFake(Stream), find, bool(const char *));
+    auto method = OverloadedMethod(ArduinoFake::getContext()._Stream, find, bool(const char *));
     When(method).AlwaysReturn(false);
     assert_test_reset(method, []() { 
         char toFind[] = "abc";
-        (ArduinoFakeInstance(Stream))->find(toFind); 
+        (ArduinoFake::getContext()._Stream.getFake())->find(toFind); 
     });
 }
 
 static void test_reset_client(void)
 {
-    auto method = Method(ArduinoFake(Client), available);
+    auto method = Method(ArduinoFake::getContext()._Client, available);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { ArduinoFakeInstance(Client)->available(); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._Client.getFake())->available(); });
 }
 
 static void test_reset_spi(void)
 {
-    auto method = Method(ArduinoFake(SPI), end);
+    auto method = Method(ArduinoFake::getContext()._SPI, end);
     When(method).AlwaysReturn();
-    assert_test_reset(method, []() { (ArduinoFakeInstance(SPI))->end(); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._SPI.getFake())->end(); });
 }
 
 static void test_reset_eeprom(void)
 {
-    auto method = Method(ArduinoFake(EEPROM), length);
+    auto method = Method(ArduinoFake::getContext()._EEPROM, length);
     When(method).AlwaysReturn(0xffff);
-    assert_test_reset(method, []() { (ArduinoFakeInstance(EEPROM))->length(); });
+    assert_test_reset(method, []() { (ArduinoFake::getContext()._EEPROM.getFake())->length(); });
 }
 
 static void test_reset(void)
@@ -120,9 +120,9 @@ static void test_reset(void)
 
 static void test_function_mock(void)
 {
-    Mock<ArduinoFake::details::FunctionFake>* m1 = &ArduinoFake(Function);
-    Mock<ArduinoFake::details::FunctionFake>* m2 = &ArduinoFake(Function);
-    Mock<ArduinoFake::details::FunctionFake>* m3 = &ArduinoFake();
+    Mock<ArduinoFake::details::FunctionFake>* m1 = &ArduinoFake::getContext()._Function;
+    Mock<ArduinoFake::details::FunctionFake>* m2 = &ArduinoFake::getContext()._Function;
+    Mock<ArduinoFake::details::FunctionFake>* m3 = &ArduinoFake::getContext()._Function;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
@@ -131,8 +131,8 @@ static void test_function_mock(void)
     TEST_ASSERT_EQUAL(m1, m2);
     TEST_ASSERT_EQUAL(m1, m3);
 
-    ArduinoFake::details::FunctionFake* i1 = ArduinoFakeInstance(Function);
-    ArduinoFake::details::FunctionFake* i2 = ArduinoFakeInstance(Function);
+    ArduinoFake::details::FunctionFake* i1 = ArduinoFake::getContext()._Function.getFake();
+    ArduinoFake::details::FunctionFake* i2 = ArduinoFake::getContext()._Function.getFake();
 
     TEST_ASSERT_NOT_NULL(i1);
     TEST_ASSERT_NOT_NULL(i2);
@@ -141,15 +141,15 @@ static void test_function_mock(void)
 
 static void test_print_mock(void)
 {
-    Mock<Print>* m1 = &ArduinoFake(Print);
-    Mock<Print>* m2 = &ArduinoFake(Print);
+    Mock<Print>* m1 = &ArduinoFake::getContext()._Print;
+    Mock<Print>* m2 = &ArduinoFake::getContext()._Print;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
     TEST_ASSERT_EQUAL(m1, m2);
 
-    Print* i1 = ArduinoFakeInstance(Print);
-    Print* i2 = ArduinoFakeInstance(Print);
+    Print* i1 = ArduinoFake::getContext()._Print.getFake();
+    Print* i2 = ArduinoFake::getContext()._Print.getFake();
 
     TEST_ASSERT_NOT_NULL(i1);
     TEST_ASSERT_NOT_NULL(i2);
@@ -158,15 +158,15 @@ static void test_print_mock(void)
 
 static void test_stream_mock(void)
 {
-    Mock<Stream>* m1 = &ArduinoFake(Stream);
-    Mock<Stream>* m2 = &ArduinoFake(Stream);
+    Mock<Stream>* m1 = &ArduinoFake::getContext()._Stream;
+    Mock<Stream>* m2 = &ArduinoFake::getContext()._Stream;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
     TEST_ASSERT_EQUAL(m1, m2);
 
-    Stream* i1 = ArduinoFakeInstance(Stream);
-    Stream* i2 = ArduinoFakeInstance(Stream);
+    Stream* i1 = ArduinoFake::getContext()._Stream.getFake();
+    Stream* i2 = ArduinoFake::getContext()._Stream.getFake();
 
     TEST_ASSERT_NOT_NULL(i1);
     TEST_ASSERT_NOT_NULL(i2);
@@ -175,15 +175,15 @@ static void test_stream_mock(void)
 
 static void test_serial_mock(void)
 {
-    Mock<Serial_>* m1 = &ArduinoFake(Serial);
-    Mock<Serial_>* m2 = &ArduinoFake(Serial);
+    Mock<Serial_>* m1 = &ArduinoFake::getContext()._Serial;
+    Mock<Serial_>* m2 = &ArduinoFake::getContext()._Serial;
 
     TEST_ASSERT_NOT_NULL(m1);
     TEST_ASSERT_NOT_NULL(m2);
     TEST_ASSERT_EQUAL(m1, m2);
 
-    Serial_* i1 = ArduinoFakeInstance(Serial);
-    Serial_* i2 = ArduinoFakeInstance(Serial);
+    Serial_* i1 = ArduinoFake::getContext()._Serial.getFake();
+    Serial_* i2 = ArduinoFake::getContext()._Serial.getFake();
 
     TEST_ASSERT_NOT_NULL(i1);
     TEST_ASSERT_NOT_NULL(i2);
@@ -195,7 +195,7 @@ static void test_unknown_instance_exception(void)
     fakeit::Mock<Serial_> fake;
 
     try {
-        ArduinoFakeInstance(Serial, &fake.get());
+        ArduinoFake::getContext()._Serial.getFake(&fake.get());
     } catch (const std::runtime_error& e) {
         TEST_ASSERT_EQUAL_STRING("Unknown instance", e.what());
     }
@@ -203,21 +203,21 @@ static void test_unknown_instance_exception(void)
 
 static void test_getter_overload_with_proxy(void)
 {
-    Serial_* serial(ArduinoFakeInstance(Serial));
-    Print* serialPrintFake = ArduinoFakeInstance(Serial, serial);
+    Serial_* serial(ArduinoFake::getContext()._Serial.getFake());
+    Print* serialPrintFake = ArduinoFake::getContext()._Serial.getFake(serial);
 
-    TEST_ASSERT_EQUAL(ArduinoFakeInstance(Serial), serialPrintFake);
-    Print* printFake = ArduinoFakeInstance(Print);
+    TEST_ASSERT_EQUAL(ArduinoFake::getContext()._Serial.getFake(), serialPrintFake);
+    Print* printFake = ArduinoFake::getContext()._Print.getFake();
     TEST_ASSERT_NOT_EQUAL(printFake, serialPrintFake);
 }
 
 static void test_getter_overload_with_mapping(void)
 {
     Serial_* serial = &::Serial;
-    Print* serialPrintFake = ArduinoFakeInstance(Serial, serial);
+    Print* serialPrintFake = ArduinoFake::getContext()._Serial.getFake(serial);
 
-    TEST_ASSERT_EQUAL(ArduinoFakeInstance(Serial), serialPrintFake);
-    Print* printFake = ArduinoFakeInstance(Print);
+    TEST_ASSERT_EQUAL(ArduinoFake::getContext()._Serial.getFake(), serialPrintFake);
+    Print* printFake = ArduinoFake::getContext()._Print.getFake();
     TEST_ASSERT_NOT_EQUAL(printFake, serialPrintFake);
 }
 

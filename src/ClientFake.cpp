@@ -3,60 +3,60 @@
 
 int Client::connect(IPAddress ip, uint16_t port)
 {
-    return ArduinoFakeInstance(Client, this)->connect(ip, port);
+    return ArduinoFake::getContext()._Client.getFake(this)->connect(ip, port);
 }
 
 int Client::connect(const char *host, uint16_t port)
 {
-    return ArduinoFakeInstance(Client, this)->connect(host, port);
+    return ArduinoFake::getContext()._Client.getFake(this)->connect(host, port);
 }
 
 size_t Client::write(uint8_t value)
 {
-    return ArduinoFakeInstance(Client, this)->write(value);
+    return ArduinoFake::getContext()._Client.getFake(this)->write(value);
 }
 
 size_t Client::write(const uint8_t *buf, size_t size)
 {
-    return ArduinoFakeInstance(Client, this)->write(buf, size);
+    return ArduinoFake::getContext()._Client.getFake(this)->write(buf, size);
 }
 
 int Client::available()
 {
-    return ArduinoFakeInstance(Client, this)->available();
+    return ArduinoFake::getContext()._Client.getFake(this)->available();
 }
 
 int Client::read()
 {
-    return ArduinoFakeInstance(Client, this)->read();
+    return ArduinoFake::getContext()._Client.getFake(this)->read();
 }
 
 int Client::read(uint8_t *buf, size_t size)
 {
-    return ArduinoFakeInstance(Client, this)->read(buf, size);
+    return ArduinoFake::getContext()._Client.getFake(this)->read(buf, size);
 }
 
 int Client::peek()
 {
-    return ArduinoFakeInstance(Client, this)->peek();
+    return ArduinoFake::getContext()._Client.getFake(this)->peek();
 }
 
 void Client::flush()
 {
-    return ArduinoFakeInstance(Client, this)->flush();
+    return ArduinoFake::getContext()._Client.getFake(this)->flush();
 }
 
 void Client::stop()
 {
-    return ArduinoFakeInstance(Client, this)->stop();
+    return ArduinoFake::getContext()._Client.getFake(this)->stop();
 }
 
 uint8_t Client::connected()
 {
-    return ArduinoFakeInstance(Client, this)->connected();
+    return ArduinoFake::getContext()._Client.getFake(this)->connected();
 }
 
 Client::operator bool()
 {
-    return ArduinoFakeInstance(Client, this)->operator bool();
+    return ArduinoFake::getContext()._Client.getFake(this)->operator bool();
 }
